@@ -32,3 +32,9 @@ Notes:
 6. The Sinatra app will provide the ability to view your scheduled reminders for each repo/issue queue and a set number of "completed" reminders.
 
 7. MailGun.com Email API is being used to send emails.  The code has been designed to be agnostic of the specific email service.
+
+
+## Features to be built
+
+1. Once hook is added to the repo, any user can signup and receive notifications
+

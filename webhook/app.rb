@@ -4,22 +4,22 @@ require_relative 'helpers'
 require 'chronic'
 require 'active_support/time'
 require 'rest-client'
-require_relative 'mongo'
+# require_relative 'mongo'
 
 
-def mongo_connection(clearCollections = true)
+# def mongo_connection(clearCollections = true)
 
-	Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-Analytics", "Issues-Data")
+# 	Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-Analytics", "Issues-Data")
 
-	if clearCollections == true
-	Mongo_Connection.clear_mongo_collections
-	end
+# 	if clearCollections == true
+# 	Mongo_Connection.clear_mongo_collections
+# 	end
 
-end
+# end
 
-def add_mongo_data(data)
-	Mongo_Connection.addReminder(data)
-end
+# def add_mongo_data(data)
+# 	Mongo_Connection.addReminder(data)
+# end
 
 
 
@@ -87,7 +87,7 @@ def create_gh_hook(fullNameRepo)
 		fullNameRepo,
 		'web',
 		{
-			:url => 'http://something.com/webhook',
+			:url => 'http://github-reminders.com/webhook',
 			:content_type => 'json'
 		},
 		{
@@ -378,10 +378,10 @@ rawDataValue = {
 		"site_admin" => false
 	}
 }
-
+s
 
 
 gh_authenticate("USERNAME", "PASSWORD")
-# create_gh_hook("StephenOTT/Test1")
+create_gh_hook("StephenOTT/Test1")
 # puts get_gh_user_emails.map {|email| email[:email]} 
-process_request(rawDataValue, "US/Eastern")
+# process_request(rawDataValue, "US/Eastern")

@@ -1,0 +1,135 @@
+<% if queues.empty? %>
+  <div class="page-header">
+    <h1>No Queues <small>I wish I had some queues :-/</small></h1>
+  </div>
+<% else %>
+  <div class="page-header">
+    <h1>Queues <small>And their job counts</small></h1>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>running</th>
+        <th>waiting</th>
+        <th>scheduled</th>
+        <th>stalled</th>
+        <th>depends</th>
+        <th>recurring</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% queues.each do |queue| %>
+    <tr class="queue-row">
+      <td class="queue-column large-text">
+        <% if queue['paused'] %>
+          <button
+            id="<%= queue['name'] %>-pause"
+            title="Unpause"
+            class="btn btn-success"
+            onclick="unpause('<%= queue['name'] %>')"><i class="icon-play"></i>
+          </button>
+        <% else %>
+          <button
+            id="<%= queue['name'] %>-pause"
+            title="Pause"
+            class="btn btn-warning"
+            onclick="pause('<%= queue['name'] %>')"><i class="icon-pause"></i>
+          </button>
+        <% end %>
+        <a href="<%= u "/queues/#{CGI::escape(queue['name'])}" %>"><%= queue['name'] %></a>
+      </td>
+      <td><%= queue['running']   %></td>
+      <td><%= queue['waiting']   %></td>
+      <td><%= queue['scheduled'] %></td>
+      <td><%= queue['stalled']   %></td>
+      <td><%= queue['depends']   %></td>
+      <td><%= queue['recurring'] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<% if failed.empty? %>
+  <div class="page-header">
+    <h1>No Failed Jobs <small>Clean as a whistle</small></h1>
+  </div>
+<% else %>
+  <div class="page-header">
+    <h1>Failed Jobs <small>D'oh!</small></h1>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>failure</th>
+        <th>count</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% failed.sort_by { |t, count| -count }.each do |t, count| %>
+    <tr class="failed-row">
+      <td class="large-text"><a href="<%= u "/failed/#{t}" %>"><%= t %></a></td>
+      <td><%= count %></td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if tracked['jobs'].empty? %>
+  <div class="page-header">
+    <h1>No Tracked Jobs <small>These aren't the droids you're looking for</small></h1>
+  </div>
+<% else %>
+  <div class="page-header">
+    <h1>Tracked Jobs <small>These <i>are</i> the droids you're looking for</small></h1>
+  </div>
+  <% counts = Hash.new; tracked['jobs'].each { |job| counts[job.state] ||= 0; counts[job.state] += 1 } %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>state</th>
+        <th>count</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% counts.sort_by { |state, count| - count }.each do |state, count| %>
+    <tr class="tracked-row">
+      <td class="large-text"><a href="<%= u "/track##{state}" %>"><%= state %></a></td>
+      <td><%= count %></td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if workers.empty? %>
+  <div class="page-header">
+    <h1>No Workers <small>Nobody's doin' nothin'!</small></h1>
+  </div>
+<% else %>
+  <div class="page-header">
+    <h1>Current Workers <small>And their job counts</small></h1>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>running</th>
+        <th>stalled</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% workers.each do |worker| %>
+    <tr class='worker-row'>
+      <td class="large-text"><a href="<%= u "/workers/#{worker['name']}" %>"><%= worker['name'] %></a></td>
+      <td><%= worker['jobs'] %></td>
+      <td><%= worker['stalled'] %></td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

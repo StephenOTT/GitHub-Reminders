@@ -17,4 +17,6 @@ module Mongo_Connection
 		@db = @client[dbName]
 		@collReminders = @db[collName]
 	end
+
+
 end

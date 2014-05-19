@@ -20,6 +20,10 @@ module Sinatra_Helpers
 		# private hooks which means the hook creator must manage which users
 		# are allowed to register for that hook.
 		def self.create_gh_hook(fullNameRepo, githubAPIObject)
+			# TODO after the hook is created, use the hook ID as a UUID to 
+			# ensure that if someone deletes the hook in the future and 
+			# then readds it, the old users with the hook will not be supported.
+
 			begin
 				githubAPIObject.create_hook(
 					fullNameRepo,	'web',

@@ -1,4 +1,3 @@
-# require_relative '../time_analyzer/system_wide_processor'
 # require 'qless'
 require_relative 'mongo'
 # require 'octokit'
@@ -6,12 +5,7 @@ require_relative 'mongo'
 require 'active_support/core_ext/time/zones'
 require 'time_difference'
 
-module Sinatra_Helpers
-
-		# def self.get_all_repos_for_logged_user(githubAuthInfo)
-		#   System_Wide_Processor.all_repos_for_logged_user(githubAuthInfo)
-		# end
-		
+module Sinatra_Helpers		
 
 		# def self.scheduled_job_date(jid)
 
@@ -49,7 +43,6 @@ module Sinatra_Helpers
 		# should error handle if the user does not have permission to 
 		# read hooks on the repo
 		def self.reminder_hook_exists?(repo, githubAPIObject)
-
 			hooks = githubAPIObject.hooks(repo) || []
 			
 			hooks.each do |x|
@@ -66,13 +59,28 @@ module Sinatra_Helpers
 		# Deletes the reminder hook from a repo.  Only deletes the hook 
 		# if it already exists.  Should be calling the 'reminder_hook_exists?' 
 		# method to determine if the hook exsists and can be deleted.
-		def self.delete_reminder_hook(repo, hookID)
-
+		def self.remove_reminder_hook(repo, hookID, githubAPIObject)
+			begin
+				githubAPIObject.remove_hook(repo, hookID)
+				return "Hook was successfully removed"
+			rescue
+				# TODO add better error support
+				return "Something when wrong when we tried to remove the hook"
+			end
 		end
 
 		# Determine the hook ID of the Remidner hook
-		def self.determine_reminder_hook_id(repo)
-
+		def self.reminder_hook_id(repo)
+			hooks = githubAPIObject.hooks(repo) || []
+			
+			hooks.each do |x|
+				if x.attrs["url"] == "http://www.GitHub-Reminders.com/webhook"
+					return x.attrs["id"]
+					break
+				else 
+					return "No GitHub-Reminder hook found"
+				end
+			end
 		end
 
 		# Creates a new record/profile for the user in MongoDB

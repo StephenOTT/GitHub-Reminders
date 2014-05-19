@@ -113,9 +113,9 @@ module Sinatra_Helpers
 
 				self.add_mongo_data(userData)
 
-				return "Record created."
+				return "User successfully Created."
 			elsif userExists == true
-				return "Cannot create record, user already exists."
+				return "Cannot create user, because the user already exists."
 			end
 		end
 

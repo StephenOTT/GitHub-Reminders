@@ -69,6 +69,36 @@ module GitHubReminders
 		end
 
 
+		get '/createuser' do
+			# post = params[:post]
+			if authenticated? == true
+				#TODO Add logic to check if user already exists
+				firstName = "Stephen"
+				lastName = "Russett"
+				Sinatra_Helpers.create_user(get_auth_info[:userID], 
+											{:username => get_auth_info[:username],
+											 :userid => get_auth_info[:userID],
+											 :firstname => firstName,
+											 :lastname => lastName
+											 })
+
+
+
+				# if createdHook[:type] == :success
+				# 	@successMessage = createdHook[:text]
+				# elsif createdHook[:type] == :failure
+				# 	@warningMessage = createdHook[:text]
+				# end
+
+			# erb :add_repo
+			else
+				@warningMessage = ["You must be logged in"]
+				erb :unauthenticated
+			end  
+
+		end
+
+
 
 
 		# get '/download/:user/:repo' do

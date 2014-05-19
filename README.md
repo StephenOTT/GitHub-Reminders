@@ -38,3 +38,7 @@ Notes:
 
 1. Once hook is added to the repo, any user can signup and receive notifications
 
+
+## Process Overview:
+
+![process overview](https://cloud.githubusercontent.com/assets/1994838/3020826/d0988818-dfa4-11e3-948d-731ab83cd81d.png)

@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "mongo"
   s.add_dependency "bson_ext"
   # s.add_dependency "qless"
+  s.add_dependency "i18n"
   s.add_dependency "activesupport", "~>3.0.0"
   s.add_dependency 'time_difference'
  

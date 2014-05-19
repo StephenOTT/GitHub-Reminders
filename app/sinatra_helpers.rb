@@ -91,14 +91,16 @@ module Sinatra_Helpers
 		def self.create_user(userid, attributes = {})
 			self.mongo_connection
 
-			username 	= attributes[:username]
-			userID		= attributes[:userid]
-			firstName 	= attributes[:firstname] || nil
-			lastName 	= attributes[:lastname] || nil
-			repos 		= []
-
+			userID = attributes[:userid]
+			
 			userExists = self.user_exists?(userid)
+
 			if userExists == false
+
+				username 	= attributes[:username]
+				firstName 	= attributes[:firstname] || nil
+				lastName 	= attributes[:lastname] || nil
+				repos 		= []
 
 				userData = { :username => username,
 							 :userid => userID,

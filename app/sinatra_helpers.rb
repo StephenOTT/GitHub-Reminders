@@ -26,15 +26,15 @@ module Sinatra_Helpers
 
 			begin
 				githubAPIObject.create_hook(
-					fullNameRepo,	'web',
-					{
-						:url => 'http://www.GitHub-Reminders.com/webhook',
-						:content_type => 'json'
-					},
-					{
-						:events => ['issue_comment'],
-						:active => true
-					})
+											fullNameRepo,	'web',
+											{
+												:url => 'http://www.GitHub-Reminders.com/webhook',
+												:content_type => 'json'
+											},
+											{
+												:events => ['issue_comment'],
+												:active => true
+											})
 				return {:type => :success, :text=>["WebHook successfully created"]}
 
 				rescue StandardError => e

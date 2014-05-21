@@ -172,7 +172,7 @@ module Sinatra_Helpers
 		def self.verified_emails_exist?(verifiedEmails)
 			if verifiedEmails.count == 0 
 				return false
-			elsif verifiedEmails >= 1
+			elsif verifiedEmails.count >= 1
 				return true
 			end
 		end

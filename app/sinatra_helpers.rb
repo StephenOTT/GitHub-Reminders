@@ -96,18 +96,21 @@ module Sinatra_Helpers
 
 			if userExists == false
 
-				username 	= attributes[:username]
-				firstName 	= attributes[:firstname] || nil
-				lastName 	= attributes[:lastname] || nil
-				repos 		= []
+				username = attributes[:username]
+				name = attributes[:fullname]
+				email = attributes[:email]
+				timezone = attributes[:timezone]
+				repos = []
 
-				userData = { :username => username,
-							 :userid => userID,
-							 :firstname => firstName,
-							 :lastname => lastName,
-							 :created_at => Time.now.utc,
-							 :updated_at => Time.now.utc,
-							 :repos => repos
+				userData = {
+							:userid => userid,
+							:username => username,
+							:name => name,
+							:timezone => timezone,
+							:email => email,
+							:created_at => Time.now.utc,
+							:updated_at => Time.now.utc,
+							:registered_repos => repos
 							}
 
 				self.add_mongo_data(userData)

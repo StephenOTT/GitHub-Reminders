@@ -112,6 +112,7 @@ module Sinatra_Helpers
 							:updated_at => Time.now.utc,
 							:registered_repos => repos
 							}
+					
 
 				self.add_mongo_data(userData)
 

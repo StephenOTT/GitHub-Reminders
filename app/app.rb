@@ -28,6 +28,11 @@ module GitHubReminders
 				@fullName = github_user.name
 				@userID = github_user.id
 
+				userExistsYN = Sinatra_Helpers.user_exists?(@userID)
+
+				if userExistsYN == false
+					redirect '/signup'
+				end
 
 			else
 				# @dangerMessage = "Danger... Warning!  Warning"

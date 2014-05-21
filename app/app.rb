@@ -104,6 +104,33 @@ module GitHubReminders
 				if @timezonesListShort.include?(post["timezone"]) == false
 					return "invalid timezone."
 				end
+
+				# Adds the data to Mongodb.  
+				# Success and Error will be returned with a String message
+				 Sinatra_Helpers.create_user( get_auth_info[:userID], 
+												{:username => get_auth_info[:username],
+												 :fullname => post["fullname"],
+												 :timezone => post["timezone"],
+												 :email => post["email"]
+												 })
+
+				# if createdHook[:type] == :success
+				# 	@successMessage = createdHook[:text]
+				# elsif createdHook[:type] == :failure
+				# 	@warningMessage = createdHook[:text]
+				# end
+
+			erb :signup
+			else
+				@warningMessage = ["You must be logged in"]
+				erb :unauthenticated
+			end  
+
+		end
+
+
+
+		# Listing if Registered Repos
 		get '/repos' do
 			if authenticated? == true
 				erb :add_repo

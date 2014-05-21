@@ -298,6 +298,8 @@ module Sinatra_Helpers
 			end
 		end
 
+		# TODO find a better way to keep a constant DB Connection.  Likely add it to the Main App.
+		# TODO move the mongo query info into the mogo.rb file
 		def self.add_mongo_data(data)
 			Mongo_Connection.addIntoMongo(data)
 		end

@@ -129,7 +129,7 @@ module Sinatra_Helpers
 									])
 			if users.count >= 1
 				return true
-			elsif users.count == 0
+			elsif users.count == 0 or users == nil
 				return false
 			end
 		end

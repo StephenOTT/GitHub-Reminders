@@ -209,7 +209,7 @@ module Sinatra_Helpers
 		# Registration of a repo, may not inlvove the creation of the hook.
 		# Hook may have already been created by another user.
 		def self.registered_repos_for_user(userID)
-			repos = self.aggregate([
+			repos = self.mongo_aggregate([
 									{ "$match" => {userid: userid}},
 									{ "$unwind" => "$repos"},
 									# { "$match" => {"repos.repo" => repo}}

@@ -158,8 +158,8 @@ module Sinatra_Helpers
 			verifiedEmails = []
 			# puts emails.to_s
 			emails.each do |e|
-				if e.attrs["verified"] == true
-					verifiedEmails << e.attrs["email"]
+				if e.attrs[:verified] == true
+					verifiedEmails << e.attrs[:email]
 				end
 			end
 

@@ -38,6 +38,43 @@ module GitHubReminders
 			erb :index
 		end
 
+		# Creates a new user in the MongoDB.  Has full logic for 
+		# data validations and ensures that there is not already 
+		# the same user in the DB
+		get '/createuser' do
+
+			post = params[:post]
+
+			if authenticated? == true
+
+				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
+
+				if userExistsYN == true
+					redirect '/'					
+				end
+				
+				# Server Side validation of the Name, Email, and Timezone data fields
+				if post["fullname"].size > 255
+					return "your name is too long.  Must be less than 255 characters"
+				end
+
+				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
+				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
+				
+				if @githubEmailsVerfiedExistsYN == false 
+					return "You do not have any verified github email addresses."
+				end
+
+				if @githubEmails.include?(post["email"]) == false
+					return "Invalid Email. Must be a email validated by GitHub.com"
+				end
+
+				@timezonesList = Sinatra_Helpers.avalaible_timezones
+				@timezonesListShort = Sinatra_Helpers.avalaible_timezones(false)
+				# puts post["timezone"]
+				if @timezonesListShort.include?(post["timezone"]) == false
+					return "invalid timezone."
+				end
 		get '/repos' do
 			if authenticated? == true
 				erb :add_repo
@@ -69,32 +106,6 @@ module GitHubReminders
 		end
 
 
-		get '/createuser' do
-			# post = params[:post]
-			if authenticated? == true
-				#TODO Add logic to check if user already exists
-				firstName = "Stephen"
-				lastName = "Russett"
-				Sinatra_Helpers.create_user(get_auth_info[:userID], 
-											{:username => get_auth_info[:username],
-											 :userid => get_auth_info[:userID],
-											 :firstname => firstName,
-											 :lastname => lastName
-											 })
-
-
-
-				# if createdHook[:type] == :success
-				# 	@successMessage = createdHook[:text]
-				# elsif createdHook[:type] == :failure
-				# 	@warningMessage = createdHook[:text]
-				# end
-
-			# erb :add_repo
-			else
-				@warningMessage = ["You must be logged in"]
-				erb :unauthenticated
-			end  
 
 		end
 

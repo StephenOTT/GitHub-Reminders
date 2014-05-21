@@ -180,8 +180,22 @@ module Sinatra_Helpers
 		# Produces the list of timezones to be selected by the user to indicate 
 		# what timezone they live in/posted the github comment from.
 		# Uses ActiceSupport::TimeZone.all to return list of timezones.
-		def self.avalaible_timezones
-			ActiveSupport::TimeZone.all
+		# Generates a Array of arrays. The inner array connections two strings.
+		# String 1 contains the Human readable name representing the timezone.
+		# String 2 contrains the timezone offset number.
+		# If False is provided as a argument for the fullname argument variable,
+		# the timezone offset number (formatted offset) will 
+		# solely return as a array of strings
+		def self.avalaible_timezones(fullname = true)
+			timezones = ActiveSupport::TimeZone.all.map do |x| 
+				if fullname == true
+					[x.name, x.formatted_offset]
+				elsif fullname == false
+					x.formatted_offset
+				end	
+			end
+			timezones.uniq
+			# ActiveSupport::TimeZone::UTC_OFFSET_WITH_ COLON
 		end
 
 		# Calculates the number of seconds between Issue Comments Created_At time

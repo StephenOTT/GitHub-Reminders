@@ -170,12 +170,11 @@ module GitHubReminders
 			end     
 		end
 
+		# Deletes a webhook
+		post '/deletewebhook' do
 
 
 		end
-
-
-
 
 		# get '/download/:user/:repo' do
 		#   authenticate!

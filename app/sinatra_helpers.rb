@@ -91,8 +91,6 @@ module Sinatra_Helpers
 		# Creates a new record/profile for the user in MongoDB
 		def self.create_user(userid, attributes = {})
 			self.mongo_connection
-
-			userID = attributes[:userid]
 			
 			userExists = self.user_exists?(userid)
 

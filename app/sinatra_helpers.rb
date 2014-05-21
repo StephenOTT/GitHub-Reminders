@@ -156,7 +156,7 @@ module Sinatra_Helpers
 		def self.get_authenticated_github_emails(githubAPIObject)
 			emails = githubAPIObject.emails
 			verifiedEmails = []
-
+			# puts emails.to_s
 			emails.each do |e|
 				if e.attrs["verified"] == true
 					verifiedEmails << e.attrs["email"]

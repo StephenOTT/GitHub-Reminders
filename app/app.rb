@@ -43,6 +43,30 @@ module GitHubReminders
 			erb :index
 		end
 
+		# /signup is a landing page with a form for the user to sign up.  
+		# Server side data validation is done in the /createuser 
+		# call to allow for future API use
+		get '/signup' do
+			if authenticated? == true
+
+				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
+
+				if userExistsYN == true
+					redirect '/'
+				end
+
+				@timezonesList = Sinatra_Helpers.avalaible_timezones
+				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
+				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
+
+				erb :signup
+			else
+				@warningMessage = ["You must be logged in"]
+				erb :unauthenticated
+			end     
+		end
+
+
 		# Creates a new user in the MongoDB.  Has full logic for 
 		# data validations and ensures that there is not already 
 		# the same user in the DB

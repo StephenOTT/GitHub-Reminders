@@ -301,14 +301,17 @@ module Sinatra_Helpers
 		# TODO find a better way to keep a constant DB Connection.  Likely add it to the Main App.
 		# TODO move the mongo query info into the mogo.rb file
 		def self.add_mongo_data(data)
+			Sinatra_Helpers.mongo_connection
 			Mongo_Connection.addIntoMongo(data)
 		end
 
 		def self.find_and_modify_document(options)
+			Sinatra_Helpers.mongo_connection
 			Mongo_Connection.find_and_modify_document(options)
 		end
 
 		def self.aggregate(input)
+			Sinatra_Helpers.mongo_connection
 			Mongo_Connection.aggregate(input)
 		end
 end

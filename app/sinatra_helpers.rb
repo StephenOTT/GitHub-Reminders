@@ -323,6 +323,7 @@ end
 # Sinatra_Helpers.register_repo_for_user(1994838, {:fullreponame => "stephenott/test1"})
 # puts Sinatra_Helpers.repo_registered?(1994838, "stephenott/test1")
 # puts Sinatra_Helpers.un_register_repo_for_user(1994838, "stephenott/test1")
-# puts Sinatra_Helpers.avalaible_timezones
+# pp Sinatra_Helpers.avalaible_timezones(false)
+# pp Sinatra_Helpers.avalaible_timezones(true)
 # puts Sinatra_Helpers.calculate_seconds_between_commentTime_and_reminderTime(Time.now.utc, Time.now.utc + 5.minutes)
 

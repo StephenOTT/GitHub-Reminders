@@ -154,9 +154,6 @@ module GitHubReminders
 			end     
 		end
 
-		# registers a repo for a specific user
-		post '/registerrepo' do
-			# ensure that the repo is avaliable, public, and the user has access.
 		end
 
 		# unregister a repo for a specific user

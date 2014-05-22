@@ -147,12 +147,16 @@ module GitHubReminders
 		post '/registerrepo' do
 		
 			if authenticated? == true
-				erb :add_repo
+				fullRepoName = "#{post['username']}/#{post['repository']}"
+				
+				registeredRepo = Sinatra_Helpers.register_repo_for_user(authInfo[:userID], {:fullreponame => fullRepoName})
+
+			# erb :add_repo
 			else
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
-			end     
-		end
+			end 
+
 
 		end
 

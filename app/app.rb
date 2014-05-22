@@ -34,6 +34,9 @@ module GitHubReminders
 					redirect '/signup'
 				end
 
+				@registeredHookList = Sinatra_Helpers.registered_hooks_for_user(@userID)
+				@registeredRepoList = Sinatra_Helpers.registered_repos_for_user(@userID)
+
 			else
 				# @dangerMessage = "Danger... Warning!  Warning"
 				@warningMessage = ["Please login to continue"]

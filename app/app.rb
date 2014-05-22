@@ -133,8 +133,19 @@ module GitHubReminders
 
 
 
-		# Listing if Registered Repos
-		get '/repos' do
+		# # Listing if Registered Repos
+		# get '/repos' do
+		# 	if authenticated? == true
+		# 		erb :add_repo
+		# 	else
+		# 		@warningMessage = ["You must be logged in"]
+		# 		erb :unauthenticated
+		# 	end     
+		# end
+
+		# registers a repo for a specific user
+		post '/registerrepo' do
+		
 			if authenticated? == true
 				erb :add_repo
 			else

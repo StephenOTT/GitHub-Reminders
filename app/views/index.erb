@@ -5,3 +5,34 @@
 
 <img src='http://gravatar.com/avatar/<%= @gravatar_id %>.png?r=PG&s=100' />
 <p><%= @userID %></p>
+<br>
+
+
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<p>Register WebHook</p>
+			<form role="form", action="addwebhook", method="post">
+				<div class="form-group">
+					 <label for="hookusername">Username</label><input type="text" class="form-control" id="hookusername", name="post[hookusername]" />
+				</div>
+				<div class="form-group">
+					 <label for="hookrepository">Repository</label><input type="text" class="form-control" id="hookrepository", name="post[hookrepository]" />
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+		<div class="col-md-6 column">
+			<p>Register Repository</p>
+			<form role="form", action="registerrepo", method="post">
+				<div class="form-group">
+					 <label for="repousername">Username</label><input type="text" class="form-control" id="repousername", name="post[repousername]" />
+				</div>
+				<div class="form-group">
+					 <label for="reporepository">Repository</label><input type="text" class="form-control" id="reporepository", name="post[reporepository]" />
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>

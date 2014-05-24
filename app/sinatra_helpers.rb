@@ -24,43 +24,68 @@ module Sinatra_Helpers
 			# TODO after the hook is created, use the hook ID as a UUID to 
 			# ensure that if someone deletes the hook in the future and 
 			# then readds it, the old users with the hook will not be supported.
-
-			begin
-				registered_hook = githubAPIObject.create_hook(
-											fullNameRepo,	'web',
-											{
-												:url => 'http://www.GitHub-Reminders.com/webhook',
-												:content_type => 'json'
-											},
-											{
-												:events => ['issue_comment'],
-												:active => true
-											})
-
-
-			rescue StandardError => e
-				message = e.errors.map!{|error| error[:message]}
-				return {:type => :failure, :text => message}
+			repoExistsYN = self.repository_exists_in_gh?(fullNameRepo, githubAPIObject)
+			if repoExistsYN == false
+				return {:type => :failure, :text => "Sorry cannot create a webhook, #{fullNameRepo} does not exists"}
 			end
 
+			hookExistsGHYN = self.reminder_hook_exists_in_gh?(fullNameRepo, githubAPIObject)
+			puts hookExistsGHYN
+			hookExistsMongoYN = self.reminder_hook_exists_in_mongo?(userid, fullNameRepo)
+			
+			if hookExistsGHYN[0] == true
+				if hookExistsMongoYN == true
+					return {:type => :alreadyexists, :text => "Hook already exists in the repo: #{fullNameRepo}. No need to create another hook"}
+				elsif hookExistsMongoYN == false
+					# TODO rework this method call for proper handling of a message 
+					# back to the user to indicate that the hook was registered 
+					# from a already existing hook in GH
+					return self.register_hook(userid, fullNameRepo, hookExistsGHYN[1])
+				end
+					
+			elsif hookExistsGHYN[0] == false				
+				begin
+					registered_hook = githubAPIObject.create_hook(
+																fullNameRepo,	'web',
+																{
+																	:url => 'http://www.GitHub-Reminders.com/webhook',
+																	:content_type => 'json'
+																},
+																{
+																	:events => ['issue_comment'],
+																	:active => true
+																})
+
+				rescue StandardError => e
+					message = e.errors.map!{|error| error[:message]}
+					return {:type => :failure, :text => message}
+				end
+
+				# TODO rework this method call for proper handling of a message 
+				# back to the user to indicate that the hook was registered in mongo
+				return self.register_hook(userid, fullNameRepo, registered_hook.attrs[:id])
+
+			end
+		end
+
+		# Creates a new registered hook record in mongodb for the specific user.
+		def self.register_hook(userid, fullNameRepo, hookid)
+			# TODO add check to see if a record already exists in mongodb
 			begin
-				# TODO move this into its own method
 				registered_hook_info = {
-					:hookid => registered_hook.attrs[:id],
+					:hookid => hookid,
 					:repo => fullNameRepo,
 					:active => true,
 					:public => true,
 					:created_at => Time.now.utc,
 					:updated_at => Time.now.utc
 				}
-
 				self.find_and_modify_document(:query => {"userid" => userid},
 											  :update => {"$push" => {"registered_hooks" => registered_hook_info }}
 											)
-
-				return {:type => :success, :text=>["WebHook successfully created"]}
+				return {:type => :success, :text=>"WebHook successfully created"}
 			rescue
-				return "something went wrong when we tried to register your hook info"
+				return {:type => :failure, :text=>"Something went wrong when we tried to register you hook"}
 			end
 		end
 
@@ -69,51 +94,82 @@ module Sinatra_Helpers
 		# read hooks on the repo
 		def self.reminder_hook_exists_in_gh?(repo, githubAPIObject)
 			# TODO add error message handling for github api call
-			hooks = githubAPIObject.hooks(repo) || []
+			hooks = githubAPIObject.hooks(repo)
+			if hooks == nil
+				hook = []
+			end
+			puts hooks.to_s
 			
-			hooks.each do |x|
-				if x.attrs["url"] == "http://www.GitHub-Reminders.com/webhook"
-					return true
+			hooks.each do |h|
+				if h.attrs[:config][:url] == "http://www.GitHub-Reminders.com/webhook"
+					return [true, h.attrs[:id]]
 					break
 				else 
-					false
+					[false]
 				end
 			end
+			return [false]
 
+		end
+
+		# Checks Github.com is the repo exists
+		def self.repository_exists_in_gh?(repo, githubAPIObject)
+			begin
+				repoExists = githubAPIObject.repository?(repo)
+				if repoExists == false
+					return false
+				else
+					return true
+				end
+			rescue StandardError => e
+				message = e.errors.map!{|error| error[:message]}
+				return {:type => :failure, :text => message}
+			end
+		end
+
+		# Checks mongoDB for registered hooks for the user.
+		def self.reminder_hook_exists_in_mongo?(userid, repo)
+			hooks = self.aggregate([
+									{ "$match" => {userid: userid}},
+									{ "$unwind" => "$registered_hooks"},
+									{ "$project" => {"registered_hooks.repo" => {"$toLower"=>"$registered_hooks.repo"}}},
+									{ "$match" => {"registered_hooks.repo" => repo.downcase}}
+									]).count
+
+			if hooks == 1
+				return true
+			elsif hooks == 0
+				return false
+			elsif hooks > 1
+				# TODO add logic on app.rb side to account for the error message response.
+				return "Something went wrong...duplicate registered hook records have been found...."		
+			end
 		end
 
 		# Deletes the reminder hook from a repo.  Only deletes the hook 
 		# if it already exists.  Should be calling the 'reminder_hook_exists?' 
 		# method to determine if the hook exsists and can be deleted.
-		def self.remove_reminder_hook_from_gh(repo, hookID, githubAPIObject)
-			begin
-				# TODO add error message handling for github api call
-				githubAPIObject.remove_hook(repo, hookID)
-				return "Hook was successfully removed"
-			rescue
-				# TODO add better error support
-				return "Something when wrong when we tried to remove the hook"
-			end
-		end
+		def self.remove_reminder_hook_from_gh(repo, githubAPIObject)
+			hookExistsYN = self.reminder_hook_exists_in_gh(repo, githubAPIObject)
 
-		# Determine the hook ID of the Remidner hook from GitHub
-		def self.reminder_hook_id_from_gh(repo)
-			hooks = githubAPIObject.hooks(repo) || []
-			
-			hooks.each do |x|
-				if x.attrs["url"] == "http://www.GitHub-Reminders.com/webhook"
-					return x.attrs["id"]
-					break
-				else 
-					return "No GitHub-Reminder hook found"
+			if hookExistsYN[0] == true
+				begin
+					# TODO add error message handling for github api call
+					githubAPIObject.remove_hook(repo, hookExistsYN[1])
+					return "Hook was successfully removed"
+				rescue
+					# TODO add better error support
+					return "Something when wrong when we tried to remove the hook"
 				end
+			elsif hookExistsYN[0] == false
+				return "Cannot remove the hook because no Reminder hook exists"
 			end
 		end
 
 		# Lists the hooks that are registered by the user
 		# These are the hooks created by the app.
-		def self.registered_hooks_for_user(userID)
-			repos = self.mongo_aggregate([
+		def self.registered_hooks_for_user(userid)
+			repos = self.aggregate([
 										{ "$match" => {userid: userid}},
 										{ "$unwind" => "$registered_hooks"},
 										# { "$match" => {"repos.repo" => repo}}
@@ -126,7 +182,7 @@ module Sinatra_Helpers
 
 		# Lists public hooks accross all users
 		def self.registered_hooks_public_all_users
-			publicHooks = self.mongo_aggregate([
+			publicHooks = self.aggregate([
 									# { "$match" => {userid: userid}},
 									{ "$unwind" => "$registered_hooks"},
 									{ "$match" => {"registered_hooks.public" => true}}
@@ -150,6 +206,7 @@ module Sinatra_Helpers
 				email = attributes[:email]
 				timezone = attributes[:timezone]
 				repos = []
+				hooks = []
 
 				userData = {
 							:userid => userid,
@@ -159,7 +216,8 @@ module Sinatra_Helpers
 							:email => email,
 							:created_at => Time.now.utc,
 							:updated_at => Time.now.utc,
-							:registered_repos => repos
+							:registered_repos => repos,
+							:registered_hooks => hooks
 							}
 					
 
@@ -175,11 +233,13 @@ module Sinatra_Helpers
 		def self.user_exists?(userid)
 			users = self.aggregate([
 									{ "$match" => {userid: userid}}
-									])
-			if users.count >= 1
+									]).count
+			if users >= 1
 				return true
-			elsif users.count == 0 or users == nil
+			elsif users == 0 or users == nil
 				return false
+			elsif users > 1
+				return "Something went wrong... duplicate users have found in our records..."
 			end
 		end
 
@@ -258,8 +318,8 @@ module Sinatra_Helpers
 		# Lists the repos that have been registered.
 		# Registration of a repo, may not inlvove the creation of the hook.
 		# Hook may have already been created by another user.
-		def self.registered_repos_for_user(userID)
-			repos = self.mongo_aggregate([
+		def self.registered_repos_for_user(userid)
+			repos = self.aggregate([
 									{ "$match" => {userid: userid}},
 									{ "$unwind" => "$registered_repos"},
 									# { "$match" => {"repos.repo" => repo}}
@@ -273,19 +333,18 @@ module Sinatra_Helpers
 		# Registers a repo for a specific user
 		def self.register_repo_for_user(userid, repoAttributes = {})
 			repoFullName = repoAttributes[:fullreponame] # example: StephenOTT/Test1
-			created_at = Time.now.utc
-			active = true
 
 			registeredRepoInfo = {:repo => repoFullName,
-								  :created_at => created_at,
-								  :active => active
+								  :created_at => Time.now.utc,
+								  :updated_at => Time.now.utc,								  
+								  :active => true
 								}
 
 			repoRegistered = self.repo_registered?(userid, repoFullName)
 
 			if repoRegistered == false				
 				self.find_and_modify_document(:query => {"userid" => userid},
-											  :update => {"$push" => {"repos" => registeredRepoInfo }}
+											  :update => {"$push" => {"registered_repos" => registeredRepoInfo }}
 											)
 				return "Repo has been successfully registered"
 
@@ -296,35 +355,46 @@ module Sinatra_Helpers
 
 		# Returns true if the repo is already registered under the specific users
 		def self.repo_registered?(userid, repo)
-			# TODO future rebuild as a non-aggregation call.  Will look into using Find()
 			repos = self.aggregate([
 									{ "$match" => {userid: userid}},
-									{ "$unwind" => "$repos"},
-									{ "$match" => {"repos.repo" => repo}}
+									{ "$unwind" => "$registered_repos"},
+									{ "$project" => {"registered_repos.repo" => {"$toLower"=>"$registered_repos.repo"}}},
+									{ "$match" => {"registered_repos.repo" => repo.downcase}}
 									]).count
-			if repos >= 1
+									# ])
+			if repos == 1
 				return true
 			elsif repos == 0
 				return false
+			elsif repos > 1
+				# TODO add logic on app.rb side to account for the error message response.
+				return "Something went wrong...duplicate registered repository records have been found...."		
 			end
 		end
 
 		# Unregisters a user from a created hook. Does not delete the hook
 		# as the hook may be being used by other users
 		def self.un_register_repo_for_user(userid, repo)
-			begin
-				self.find_and_modify_document(:query => { "userid" => userid},
-												:update => {"$pull" => {'repos' => {'repo'=>repo}}}
-											)
-				return "repo has been removed"
-			rescue
-				return "something went wrong when we tried to remove the repo"
+			repoRegistered = self.repo_registered?(userid, repo)
+
+			if repoRegistered == true
+				begin
+					self.find_and_modify_document(:query => { "userid" => userid},
+													:update => {"$pull" => {'registered_repos' => {'repo'=>repo}}}
+												)
+					return "repo has been removed"
+				rescue
+					return "something went wrong when we tried to remove the repo"
+				end
+			elsif repoRegistered == false
+				return "We cannot unregister the repo, because you have not registred it."
 			end
+					
 		end
 
 		# sets the user timezone in MongoDB
-		def self.set_user_timezone(userID, timezone)
-			self.find_and_modify_document(:query => {"userid" => userID},
+		def self.set_user_timezone(userid, timezone)
+			self.find_and_modify_document(:query => {"userid" => userid},
 										  :update => {"$set" => {"timezone" => timezone.to_s}}
 											)
 		end
@@ -370,10 +440,9 @@ end
 # Sinatra_Helpers.mongo_connection
 # puts Sinatra_Helpers.user_exists?(1994838)
 # Sinatra_Helpers.set_user_timezone(1994838)
-# Sinatra_Helpers.register_repo_for_user(1994838, {:fullreponame => "stephenott/test1"})
+# Sinatra_Helpers.register_repo_for_user(1994838, {:fullreponame => "stephenott/test2"})
 # puts Sinatra_Helpers.repo_registered?(1994838, "stephenott/test1")
 # puts Sinatra_Helpers.un_register_repo_for_user(1994838, "stephenott/test1")
 # pp Sinatra_Helpers.avalaible_timezones(false)
 # pp Sinatra_Helpers.avalaible_timezones(true)
 # puts Sinatra_Helpers.calculate_seconds_between_commentTime_and_reminderTime(Time.now.utc, Time.now.utc + 5.minutes)
-

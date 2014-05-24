@@ -69,7 +69,6 @@ module GitHubReminders
 			end     
 		end
 
-
 		# Creates a new user in the MongoDB.  Has full logic for 
 		# data validations and ensures that there is not already 
 		# the same user in the DB
@@ -128,57 +127,55 @@ module GitHubReminders
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
 			end  
-
 		end
-
-
-
-		# # Listing if Registered Repos
-		# get '/repos' do
-		# 	if authenticated? == true
-		# 		erb :add_repo
-		# 	else
-		# 		@warningMessage = ["You must be logged in"]
-		# 		erb :unauthenticated
-		# 	end     
-		# end
 
 		# registers a repo for a specific user
 		post '/registerrepo' do
-		
+			post = params[:post]
+			puts "dog"
 			if authenticated? == true
-				fullRepoName = "#{post['username']}/#{post['repository']}"
+				fullRepoName = "#{post['repousername']}/#{post['reporepository']}"
 				
-				registeredRepo = Sinatra_Helpers.register_repo_for_user(authInfo[:userID], {:fullreponame => fullRepoName})
+				return Sinatra_Helpers.register_repo_for_user(get_auth_info[:userID], {:fullreponame => fullRepoName})
 
-			# erb :add_repo
+			erb :index
 			else
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
 			end 
-
-
 		end
 
 		# unregister a repo for a specific user
 		post '/unregisterrepo' do
+			post = params[:post]
+			if authenticated? == true
+				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
+				
+				return Sinatra_Helpers.un_register_repo_for_user(get_auth_info[:userID], fullRepoName)
 
+			# erb :index
+			else
+				@warningMessage = ["You must be logged in"]
+				erb :unauthenticated
+			end 
 		end
 
 		post '/addwebhook' do
 			post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['username']}/#{post['repository']}"
+				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
 				
-				createdHook = Sinatra_Helpers.create_gh_hook(fullRepoName, github_api)
-				
+				createdHook = Sinatra_Helpers.create_gh_hook(get_auth_info[:userID], fullRepoName, github_api)
+				puts createdHook
 				if createdHook[:type] == :success
-					@successMessage = createdHook[:text]
+					@successMessage = [createdHook[:text]]
 				elsif createdHook[:type] == :failure
-					@warningMessage = createdHook[:text]
+					@warningMessage = [createdHook[:text]]
+				elsif createdHook[:type] == :alreadyexists
+					@warningMessage = [createdHook[:text]]
 				end
 
-			erb :add_repo
+			erb :index
 			else
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
@@ -187,17 +184,18 @@ module GitHubReminders
 
 		# Deletes a webhook
 		post '/deletewebhook' do
+			post = params[:post]
+			if authenticated? == true
+				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
+				
+				return Sinatra_Helpers.remove_reminder_hook_from_gh(fullRepoName, github_api)
 
-
+			# erb :index
+			else
+				@warningMessage = ["You must be logged in"]
+				erb :unauthenticated
+			end     
 		end
-
-		# get '/download/:user/:repo' do
-		#   authenticate!
-		#   Sinatra_Helpers.download_time_tracking_data(params['user'], params['repo'], github_api, get_auth_info )
-		#   @successMessage = "Download Complete"
-		#   redirect '/timetrack'
-		# end
-
 
 
 		get '/logout' do

@@ -7,6 +7,7 @@ PATH
       chronic_duration
       i18n
       mongo
+      newrelic_rpm
       rack-flash3
       sinatra (~> 1.0)
       time_difference
@@ -30,6 +31,7 @@ GEM
     mongo (1.10.1)
       bson (~> 1.10.1)
     multipart-post (2.0.0)
+    newrelic_rpm (3.8.1.221)
     numerizer (0.1.1)
     octokit (3.1.0)
       sawyer (~> 0.5.3)

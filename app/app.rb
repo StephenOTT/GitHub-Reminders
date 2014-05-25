@@ -125,7 +125,7 @@ module GitHubReminders
 						flash[:success] = [createdUser[:text]]
 						redirect '/'
 					elsif createdUser[:type] == :failure
-						@warningMessage = [createdUser[:text]]
+						flash[:warning] = [createdUser[:text]]
 					end
 				end
 				
@@ -144,9 +144,9 @@ module GitHubReminders
 				
 				registeredRepo = Sinatra_Helpers.register_repo_for_user(get_auth_info[:userID], {:fullreponame => fullRepoName})
 				if registeredRepo[:type] == :success
-					@successMessage = [registeredRepo[:text]]
+					flash[:success] = [registeredRepo[:text]]
 				elsif registeredRepo[:type] == :failure
-					@warningMessage = [registeredRepo[:text]]
+					flash[:warning] = [registeredRepo[:text]]
 				end
 
 				redirect '/'
@@ -167,9 +167,9 @@ module GitHubReminders
 				unregisteredRepo = Sinatra_Helpers.un_register_repo_for_user(get_auth_info[:userID], fullRepoName)
 
 				if unregisteredRepo[:type] == :success
-					@successMessage = [unregisteredRepo[:text]]
+					flash[:success] = [unregisteredRepo[:text]]
 				elsif unregisteredRepo[:type] == :failure
-					@warningMessage = [unregisteredRepo[:text]]
+					flash[:warning] = [unregisteredRepo[:text]]
 				end
 
 				redirect '/'
@@ -187,9 +187,9 @@ module GitHubReminders
 				
 				createdHook = Sinatra_Helpers.create_gh_hook(get_auth_info[:userID], fullRepoName, github_api)
 				if createdHook[:type] == :success
-					@successMessage = [createdHook[:text]]
+					flash[:success] = [createdHook[:text]]
 				elsif createdHook[:type] == :failure
-					@warningMessage = [createdHook[:text]]
+					flash[:warning] = [createdHook[:text]]
 				end
 				redirect '/'
 			# erb :index
@@ -203,21 +203,19 @@ module GitHubReminders
 		get '/unregisterhook/:username/:repository' do
 			# post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['removehookusername']}/#{post['removehookrepository']}"
-				@successMessage = []
-				@warningMessage = []
+				fullRepoName = "#{params[:username]}/#{params[:repository]}"
 
 				ghRemoval, mongoRemoval = Sinatra_Helpers.remove_webhook(get_auth_info[:userID], fullRepoName, github_api)
-				
+
 				if ghRemoval[:type] == :success
-					@successMessage << ghRemoval[:text]
+					(flash[:success] ||= []) << ghRemoval[:text]
 				elsif ghRemoval[:type] == :failure
-					@warningMessage << ghRemoval[:text]
+					(flash[:warning] ||= []) << ghRemoval[:text]
 				end
 				if mongoRemoval[:type] == :success
-					@successMessage << mongoRemoval[:text]
+					(flash[:success] ||= []) << mongoRemoval[:text]
 				elsif mongoRemoval[:type] == :failure
-					@warningMessage << mongoRemoval[:text]
+					(flash[:warning] ||= []) << mongoRemoval[:text]
 				end
 
 				redirect '/'

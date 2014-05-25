@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport", "~>3.0.0"
   s.add_dependency 'time_difference'
   # s.add_dependency 'octokit'
+  s.add_dependency "rack-flash3"
  
 
   s.add_development_dependency "rake"

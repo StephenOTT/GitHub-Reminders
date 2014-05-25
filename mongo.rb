@@ -17,9 +17,18 @@ module Mongo_Connection
 	end
 
 	def self.mongo_Connect(url, port, dbName, collName)
-		@client = MongoClient.new(url, port)
+		
+		uri = "mongodb://#{ENV['MONGO_USERNAME']}:#{ENV['MONGO_PASSWORD']}@#{ENV['MONGO_CONNECTION']}"
+		@client = MongoClient.from_uri(uri)
+
+		# @client = MongoClient.new(url, port)
 		@db = @client[dbName]
 		@collRemindersUsers = @db[collName]
+
+		# code for working with MongoLab
+
+
+
 	end
 
 	def self.aggregate(input)

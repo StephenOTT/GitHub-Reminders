@@ -476,7 +476,7 @@ module Sinatra_Helpers
 		end
 
 		def self.mongo_connection(clearCollections = false)
-			Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-Reminders", "Users")
+			Mongo_Connection.mongo_Connect("localhost", 27017, "github-reminders", "users")
 
 			if clearCollections == true
 			Mongo_Connection.clear_mongo_collections

@@ -1,5 +1,5 @@
 require 'sinatra'
-require_relative '/webhook/controller'
+require_relative './webhook/controller'
 
 
 post '/webhook' do

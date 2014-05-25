@@ -48,7 +48,7 @@ module Sinatra_Helpers
 					registered_hook = githubAPIObject.create_hook(
 																fullNameRepo,	'web',
 																{
-																	:url => 'http://www.GitHub-Reminders.com/webhook',
+																	:url => 'http://www.github-reminders.com/webhook',
 																	:content_type => 'json'
 																},
 																{
@@ -104,7 +104,7 @@ module Sinatra_Helpers
 				end
 				
 				hooks.each do |h|
-					if h.attrs[:config][:url] == "http://www.GitHub-Reminders.com/webhook"
+					if h.attrs[:config][:url] == "http://www.gitHub-reminders.com/webhook"
 						return [true, h.attrs[:id]]
 						break
 					else 

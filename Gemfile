@@ -1,2 +1,6 @@
-source 'https://rubygems.org'
-gem 'sinatra'
+source "http://rubygems.org"
+
+# Specify your gem's dependencies in sinatra_auth_github.gemspec
+gemspec
+
+# vim:ft=ruby

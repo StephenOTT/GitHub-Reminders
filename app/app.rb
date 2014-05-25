@@ -122,8 +122,8 @@ module GitHubReminders
 												 })
 
 	 				if createdUser[:type] == :success
-						@successMessage = [createdUser[:text]]
-						redirect '/signup'
+						flash[:success] = [createdUser[:text]]
+						redirect '/'
 					elsif createdUser[:type] == :failure
 						@warningMessage = [createdUser[:text]]
 					end
@@ -137,10 +137,10 @@ module GitHubReminders
 		end
 
 		# registers a repo for a specific user
-		post '/registerrepo' do
-			post = params[:post]
+		get '/registerrepo/:username/:repository' do
+			# post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['repousername']}/#{post['reporepository']}"
+				fullRepoName = "#{params[:username]}/#{params[:repository]}"
 				
 				registeredRepo = Sinatra_Helpers.register_repo_for_user(get_auth_info[:userID], {:fullreponame => fullRepoName})
 				if registeredRepo[:type] == :success
@@ -159,10 +159,10 @@ module GitHubReminders
 		end
 
 		# unregister a repo for a specific user
-		post '/unregisterrepo' do
-			post = params[:post]
+		get '/unregisterrepo/:username/:repository' do
+			# post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['removerepousername']}/#{post['removereporepository']}"
+				fullRepoName = "#{params[:username]}/#{params[:repository]}"
 				
 				unregisteredRepo = Sinatra_Helpers.un_register_repo_for_user(get_auth_info[:userID], fullRepoName)
 
@@ -180,10 +180,10 @@ module GitHubReminders
 			end 
 		end
 
-		post '/addwebhook' do
-			post = params[:post]
+		get '/registerhook/?:username?/?:repository?' do
+			# post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
+				fullRepoName = "#{params[:username]}/#{params[:repository]}"
 				
 				createdHook = Sinatra_Helpers.create_gh_hook(get_auth_info[:userID], fullRepoName, github_api)
 				if createdHook[:type] == :success
@@ -200,8 +200,8 @@ module GitHubReminders
 		end
 
 		# Deletes a webhook
-		post '/deletewebhook' do
-			post = params[:post]
+		get '/unregisterhook/:username/:repository' do
+			# post = params[:post]
 			if authenticated? == true
 				fullRepoName = "#{post['removehookusername']}/#{post['removehookrepository']}"
 				@successMessage = []

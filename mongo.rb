@@ -18,7 +18,8 @@ module Mongo_Connection
 
 	def self.mongo_Connect(url, port, dbName, collName)
 		
-		uri = ENV['MONGOLAB_URI']
+		# uri = ENV['MONGOLAB_URI']
+		uri = "mongodb://heroku_app24859406:21lerkjiqn8sh11ra2sh83lk8h@ds051858.mongolab.com:51858/heroku_app24859406"
 		@client = MongoClient.from_uri(uri)
 
 		# @client = MongoClient.new(url, port)
@@ -27,6 +28,8 @@ module Mongo_Connection
 
 		# code for working with MongoLab
 
+		#Test Code
+		# self.addIntoMongo({:date=>"123"})
 
 
 	end
@@ -34,6 +37,4 @@ module Mongo_Connection
 	def self.aggregate(input)
 		@collRemindersUsers.aggregate(input)
 	end
-
-
 end

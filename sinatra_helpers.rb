@@ -476,7 +476,7 @@ module Sinatra_Helpers
 		end
 
 		def self.mongo_connection(clearCollections = false)
-			Mongo_Connection.mongo_Connect("localhost", 27017, "github-reminders", "users")
+			Mongo_Connection.mongo_Connect("localhost", 27017, ENV['MONGO_DB_NAME'], ENV['MONGO_DB_COLL_NAME'])
 
 			if clearCollections == true
 			Mongo_Connection.clear_mongo_collections
@@ -503,6 +503,7 @@ end
 
 # Debug Code
 # Sinatra_Helpers.mongo_connection
+# Sinatra_Helpers.add_mongo_data({:date=>"123"})
 # puts Sinatra_Helpers.registered_hooks_public_all_users
 # puts Sinatra_Helpers.user_exists?(1994838)
 # Sinatra_Helpers.set_user_timezone(1994838)

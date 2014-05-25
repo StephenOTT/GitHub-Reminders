@@ -29,7 +29,7 @@ module GitHubReminders
 				# @fullName = github_user.name
 				# @userID = github_user.id
 
-				userExistsYN = Sinatra_Helpers.user_exists?(@userID)
+				userExistsYN = Sinatra_Helpers.user_exists?(get_auth_info[:userID])
 
 				if userExistsYN == false
 					redirect '/signup'

@@ -34,13 +34,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% @registeredRepoList.each do |r| %>
-						<tr>
-							<td><%= r["registered_repos"]["repo"] %></td>
-							<td><%= r["registered_repos"]["active"] %></td>
-							<td><%= r["registered_repos"]["created_at"] %></td>
-							<td><%= r["registered_repos"]["updated_at"] %></td>
-						</tr>				
+					<% if @registeredRepoList %>
+						<% @registeredRepoList.each do |r| %>
+							<tr>
+								<td><%= r["registered_repos"]["repo"] %></td>
+								<td><%= r["registered_repos"]["active"] %></td>
+								<td><%= r["registered_repos"]["created_at"] %></td>
+								<td><%= r["registered_repos"]["updated_at"] %></td>
+							</tr>				
+						<% end %>
 					<% end %>
 				</tbody>
 			</table>
@@ -68,14 +70,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% @registeredHookList.each do |r| %>
-						<tr>
-							<td><%= r["registered_hooks"]["repo"] %></td>
-							<td><%= r["registered_hooks"]["active"] %></td>
-							<td><%= r["registered_hooks"]["public"] %></td>
-							<td><%= r["registered_hooks"]["created_at"] %></td>
-							<td><%= r["registered_hooks"]["updated_at"] %></td>
-						</tr>				
+					<% if @registeredHookList %>
+						<% @registeredHookList.each do |r| %>
+							<tr>
+								<td><%= r["registered_hooks"]["repo"] %></td>
+								<td><%= r["registered_hooks"]["active"] %></td>
+								<td><%= r["registered_hooks"]["public"] %></td>
+								<td><%= r["registered_hooks"]["created_at"] %></td>
+								<td><%= r["registered_hooks"]["updated_at"] %></td>
+							</tr>				
+						<% end %>
 					<% end %>
 				</tbody>
 			</table>
@@ -103,14 +107,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% @publicHookList.each do |r| %>
-						<tr>
-							<td><%= r["registered_hooks"]["repo"] %></td>
-							<td><%= r["registered_hooks"]["active"] %></td>
-							<td><%= r["registered_hooks"]["public"] %></td>
-							<td><%= r["registered_hooks"]["created_at"] %></td>
-							<td><%= r["registered_hooks"]["updated_at"] %></td>
-						</tr>				
+					<% if @publicHookList %>
+						<% @publicHookList.each do |r| %>
+							<tr>
+								<td><%= r["registered_hooks"]["repo"] %></td>
+								<td><%= r["registered_hooks"]["active"] %></td>
+								<td><%= r["registered_hooks"]["public"] %></td>
+								<td><%= r["registered_hooks"]["created_at"] %></td>
+								<td><%= r["registered_hooks"]["updated_at"] %></td>
+							</tr>				
+						<% end %>
 					<% end %>
 				</tbody>
 			</table>

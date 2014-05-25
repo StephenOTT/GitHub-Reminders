@@ -50,32 +50,33 @@
 				</div><!--/.nav-collapse -->
 			</div>
 			<!--Messaging Code Start -->
-			<%if @dangerMessage then %>
-				<% @dangerMessage.each do |text| %>
+			<%if flash[:danger] %>
+				<% flash[:danger].each do |text| %>
 						<div class="alert alert-danger alert-dismissable">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 							<%= text %>
 						</div>
 					<% end %>
 			<% end %>
-			<%if @warningMessage then %>
-				<% @warningMessage.each do |text| %>
+			<% if flash[:warning] %>
+				<% flash[:warning].each do |text| %>
 					<div class="alert alert-warning alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<%= text %>
 					</div>
 				<% end %>
 			<% end %>
-			<%if @infoMessage then %>
-				<% @infoMessage.each do |text| %>			
+
+			<%if flash[:info] %>
+				<% flash[:info].each do |text| %>			
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<%= text %>
 					</div>
 				<% end %>
 			<% end %>
-			<%if @successMessage then %>
-				<% @successMessage.each do |text| %>			
+			<%if flash[:success] %>
+				<% flash[:success].each do |text| %>			
 					<div class="alert alert-success alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<%= text %>
@@ -84,7 +85,7 @@
 			<% end %>  
 			<!--Messaging Code End -->
 			<div>
-						<%= yield %>
+				<%= yield %>
 			</div>
 
 	</div>

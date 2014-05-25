@@ -24,10 +24,10 @@ module GitHubReminders
 		get '/' do
 			# authenticate!
 			if authenticated? == true
-				@username = github_user.login
-				@gravatar_id = github_user.gravatar_id
-				@fullName = github_user.name
-				@userID = github_user.id
+				# @username = github_user.login
+				# @gravatar_id = github_user.gravatar_id
+				# @fullName = github_user.name
+				# @userID = github_user.id
 
 				userExistsYN = Sinatra_Helpers.user_exists?(@userID)
 

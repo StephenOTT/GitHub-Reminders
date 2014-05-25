@@ -104,7 +104,7 @@ module Sinatra_Helpers
 				end
 				
 				hooks.each do |h|
-					if h.attrs[:config][:url] == "http://www.gitHub-reminders.com/webhook"
+					if h.attrs[:config][:url] == "http://www.github-reminders.com/webhook"
 						return [true, h.attrs[:id]]
 						break
 					else 

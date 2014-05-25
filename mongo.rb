@@ -18,7 +18,7 @@ module Mongo_Connection
 
 	def self.mongo_Connect(url, port, dbName, collName)
 		
-		uri = "mongodb://#{ENV['MONGO_USERNAME']}:#{ENV['MONGO_PASSWORD']}@#{ENV['MONGO_CONNECTION']}"
+		uri = ENV['MONGOLAB_URI']
 		@client = MongoClient.from_uri(uri)
 
 		# @client = MongoClient.new(url, port)

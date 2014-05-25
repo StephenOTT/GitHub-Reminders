@@ -34,10 +34,13 @@ module GitHubReminders
 					redirect '/signup'
 				end
 
-				@registeredHookList = Sinatra_Helpers.registered_hooks_for_user(@userID)
-				@registeredRepoList = Sinatra_Helpers.registered_repos_for_user(@userID)
-
+				@registeredHookList = Sinatra_Helpers.registered_hooks_for_user(get_auth_info[:userID])
+				@registeredRepoList = Sinatra_Helpers.registered_repos_for_user(get_auth_info[:userID])
+				@publicHookList = Sinatra_Helpers.registered_hooks_public_all_users
 			else
+				@registeredRepoList = []
+				@registeredHookList = []
+				@publicHookList = []
 				# @dangerMessage = "Danger... Warning!  Warning"
 				@warningMessage = ["Please login to continue"]
 				# @infoMessage = "Info 123"
@@ -72,56 +75,65 @@ module GitHubReminders
 		# Creates a new user in the MongoDB.  Has full logic for 
 		# data validations and ensures that there is not already 
 		# the same user in the DB
-		get '/createuser' do
+		post '/createuser' do
 
 			post = params[:post]
 
 			if authenticated? == true
+
+				@dangerMessage = []
 
 				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
 
 				if userExistsYN == true
 					redirect '/'					
 				end
-				
+
 				# Server Side validation of the Name, Email, and Timezone data fields
 				if post["fullname"].size > 255
-					return "your name is too long.  Must be less than 255 characters"
+					@dangerMessage << "your name is too long.  Must be less than 255 characters"
+				end
+
+				if post["fullname"].size == 0
+					@dangerMessage << "You must provide a name"
 				end
 
 				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
 				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
 				
 				if @githubEmailsVerfiedExistsYN == false 
-					return "You do not have any verified github email addresses."
+					@dangerMessage << "You do not have any verified github email addresses.  You must have a GitHub Verified email to continue"
 				end
 
 				if @githubEmails.include?(post["email"]) == false
-					return "Invalid Email. Must be a email validated by GitHub.com"
+					@dangerMessage << "Invalid Email. You must be a GitHub.com validated email"
 				end
 
 				@timezonesList = Sinatra_Helpers.avalaible_timezones
 				@timezonesListShort = Sinatra_Helpers.avalaible_timezones(false)
-				# puts post["timezone"]
+
 				if @timezonesListShort.include?(post["timezone"]) == false
-					return "invalid timezone."
+					@dangerMessage << "invalid timezone."
 				end
 
 				# Adds the data to Mongodb.  
 				# Success and Error will be returned with a String message
-				 Sinatra_Helpers.create_user( get_auth_info[:userID], 
+				if @dangerMessage.length == 0 
+					createdUser = Sinatra_Helpers.create_user( get_auth_info[:userID], 
 												{:username => get_auth_info[:username],
 												 :fullname => post["fullname"],
 												 :timezone => post["timezone"],
 												 :email => post["email"]
 												 })
 
-				# if createdHook[:type] == :success
-				# 	@successMessage = createdHook[:text]
-				# elsif createdHook[:type] == :failure
-				# 	@warningMessage = createdHook[:text]
-				# end
-
+	 				if createdUser[:type] == :success
+						@successMessage = [createdUser[:text]]
+						redirect '/signup'
+					elsif createdUser[:type] == :failure
+						@warningMessage = [createdUser[:text]]
+					end
+				end
+				
 			erb :signup
 			else
 				@warningMessage = ["You must be logged in"]
@@ -132,13 +144,19 @@ module GitHubReminders
 		# registers a repo for a specific user
 		post '/registerrepo' do
 			post = params[:post]
-			puts "dog"
 			if authenticated? == true
 				fullRepoName = "#{post['repousername']}/#{post['reporepository']}"
 				
-				return Sinatra_Helpers.register_repo_for_user(get_auth_info[:userID], {:fullreponame => fullRepoName})
+				registeredRepo = Sinatra_Helpers.register_repo_for_user(get_auth_info[:userID], {:fullreponame => fullRepoName})
+				if registeredRepo[:type] == :success
+					@successMessage = [registeredRepo[:text]]
+				elsif registeredRepo[:type] == :failure
+					@warningMessage = [registeredRepo[:text]]
+				end
 
-			erb :index
+				redirect '/'
+
+			# erb :index
 			else
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
@@ -149,10 +167,17 @@ module GitHubReminders
 		post '/unregisterrepo' do
 			post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
+				fullRepoName = "#{post['removerepousername']}/#{post['removereporepository']}"
 				
-				return Sinatra_Helpers.un_register_repo_for_user(get_auth_info[:userID], fullRepoName)
+				unregisteredRepo = Sinatra_Helpers.un_register_repo_for_user(get_auth_info[:userID], fullRepoName)
 
+				if unregisteredRepo[:type] == :success
+					@successMessage = [unregisteredRepo[:text]]
+				elsif unregisteredRepo[:type] == :failure
+					@warningMessage = [unregisteredRepo[:text]]
+				end
+
+				redirect '/'
 			# erb :index
 			else
 				@warningMessage = ["You must be logged in"]
@@ -166,16 +191,13 @@ module GitHubReminders
 				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
 				
 				createdHook = Sinatra_Helpers.create_gh_hook(get_auth_info[:userID], fullRepoName, github_api)
-				puts createdHook
 				if createdHook[:type] == :success
 					@successMessage = [createdHook[:text]]
 				elsif createdHook[:type] == :failure
 					@warningMessage = [createdHook[:text]]
-				elsif createdHook[:type] == :alreadyexists
-					@warningMessage = [createdHook[:text]]
 				end
-
-			erb :index
+				redirect '/'
+			# erb :index
 			else
 				@warningMessage = ["You must be logged in"]
 				erb :unauthenticated
@@ -186,10 +208,24 @@ module GitHubReminders
 		post '/deletewebhook' do
 			post = params[:post]
 			if authenticated? == true
-				fullRepoName = "#{post['hookusername']}/#{post['hookrepository']}"
-				
-				return Sinatra_Helpers.remove_reminder_hook_from_gh(fullRepoName, github_api)
+				fullRepoName = "#{post['removehookusername']}/#{post['removehookrepository']}"
+				@successMessage = []
+				@warningMessage = []
 
+				ghRemoval, mongoRemoval = Sinatra_Helpers.remove_webhook(get_auth_info[:userID], fullRepoName, github_api)
+				
+				if ghRemoval[:type] == :success
+					@successMessage << ghRemoval[:text]
+				elsif ghRemoval[:type] == :failure
+					@warningMessage << ghRemoval[:text]
+				end
+				if mongoRemoval[:type] == :success
+					@successMessage << mongoRemoval[:text]
+				elsif mongoRemoval[:type] == :failure
+					@warningMessage << mongoRemoval[:text]
+				end
+
+				redirect '/'
 			# erb :index
 			else
 				@warningMessage = ["You must be logged in"]

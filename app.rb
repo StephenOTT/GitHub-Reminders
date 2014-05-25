@@ -1,11 +1,13 @@
 require_relative 'sinatra_helpers'
-configure :production do
-  require 'newrelic_rpm'
-end
+
 
 
 module GitHubReminders
 	class App < Sinatra::Base
+
+		configure :production do
+		  require 'newrelic_rpm'
+		end
 
 		enable :sessions
 		use Rack::Flash, :sweep => true

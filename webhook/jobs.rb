@@ -1,6 +1,6 @@
 require 'rest-client'
 
-class MyJobClass
+class SendEmail
   def self.perform(job)
   	# Future code for loading html template
 	# file = File.open("path-to-file.tar.gz", "txt")
@@ -14,3 +14,42 @@ class MyJobClass
 		"text" => "This is a Github-Reminder"
   end
 end
+
+
+
+class CheckIfReminder
+	def self.preform(job)
+
+
+	end
+end
+
+
+class ParseReminder
+	def self.preform(job)
+
+
+	end
+end
+
+
+class ValidateUserPermissions
+	def self.preform(job)
+
+		# 1. Hook Registered ,active, and public?
+		# 2. User has access to the hook?
+		# 3. User has registered the repo and is active
+
+	end
+end
+
+
+class ScheduleEmail
+	def self.preform(job)
+
+		# client = Qless::Client.new
+		# queue = client.queues['testing']
+		# queue.put(MyJobClass, {:hello => 'howdy'}, :delay => 420)
+	end
+end
+

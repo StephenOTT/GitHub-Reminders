@@ -1,9 +1,9 @@
 
-require 'octokit'
+# require 'octokit'
 require_relative 'helpers'
 require 'chronic'
 require 'active_support/time'
-require 'rest-client'
+# require 'rest-client'
 # require_relative 'mongo'
 
 
@@ -21,126 +21,90 @@ require 'rest-client'
 # 	Mongo_Connection.addReminder(data)
 # end
 
+module WebHook_Controller
 
+	def self.is_Reminder_Comment?(commentBody)
+		isReminderComment = Helpers.reminder_comment?(commentBody)
+	end
 
-def is_Reminder_Comment?(commentBody)
-	isReminderComment = Helpers.reminder_comment?(commentBody)
-end
+	def self.parse_time_commit(timeComment, userTimezone)
+		acceptedClockEmoji = Helpers.get_Reminder_Emoji
 
-def self.parse_time_commit(timeComment, userTimezone)
-	acceptedClockEmoji = Helpers.get_Reminder_Emoji
-
-	parsedCommentHash = {}
-	# parsedCommentHash = {
-	# 						"work_date" => nil, 
-	# 						"time_comment" => nil, 
-	# 					}
-	parsedComment = []
-	
-	acceptedClockEmoji.each do |x|
-		if timeComment =~ /\A#{x}/
-			parsedComment = Helpers.parse_billable_time_comment(timeComment,x)
-			break
+		parsedCommentHash = {}
+		# parsedCommentHash = {
+		# 						"work_date" => nil, 
+		# 						"time_comment" => nil, 
+		# 					}
+		parsedComment = []
+		
+		acceptedClockEmoji.each do |x|
+			if timeComment =~ /\A#{x}/
+				parsedComment = Helpers.parse_billable_time_comment(timeComment,x)
+				break
+			end
 		end
-	end
-	
-	if parsedComment.empty? == true
-		return nil
-	end
-
-	if parsedComment[0] != nil
-		workDate = Helpers.get_time_work_date(parsedComment[0], userTimezone)
-		if workDate != nil
-			parsedCommentHash["work_date"] = workDate
-		elsif workDate == nil
-			return puts "bad date syntax"
+		
+		if parsedComment.empty? == true
+			return nil
 		end
+
+		if parsedComment[0] != nil
+			workDate = Helpers.get_time_work_date(parsedComment[0], userTimezone)
+			if workDate != nil
+				parsedCommentHash["work_date"] = workDate
+			elsif workDate == nil
+				return puts "bad date syntax"
+			end
+		end
+
+		if parsedComment[1] != nil
+			parsedCommentHash["time_comment"] = Helpers.get_time_commit_comment(parsedComment[1])
+		end
+
+		return parsedCommentHash
 	end
 
-	if parsedComment[1] != nil
-		parsedCommentHash["time_comment"] = Helpers.get_time_commit_comment(parsedComment[1])
+
+
+
+	def self.process_request(issueCommentEvent, userTimezone)	
+		repo = issueCommentEvent["repository"]["full_name"]
+		issueURL = issueCommentEvent["issue"]["html_url"]
+		issueTitle = issueCommentEvent["issue"]["title"]
+		issueState = issueCommentEvent["issue"]["state"]
+		comment = issueCommentEvent["comment"]["body"]
+		commentURL = issueCommentEvent["comment"]["html_url"]
+		commentCreated_At = issueCommentEvent["comment"]["created_at"]
+		# timezoneOffset = "+05:00"
+		commentUserName = issueCommentEvent["comment"]["user"]["login"]
+		commentUserID = issueCommentEvent["comment"]["user"]["id"]
+
+		# puts repo
+		# puts issueURL
+		# puts issueTitle
+		# puts issueState
+		# puts comment
+
+		Time.zone = userTimezone
+		Chronic.time_class = Time.zone
+		# puts Chronic.parse(commentCreated_At).in_time_zone(userTimezone)
+		
+		# puts commentCreated_At
+		# puts commentURL
+		# puts "===="
+
+		# puts is_Reminder_Comment?(comment)
+		
+		parsedComment = parse_time_commit(comment, userTimezone)
+		
+		# puts parsedComment["work_date"]
+		# puts parsedComment["time_comment"]
+		
+		send_simple_message(parsedComment["work_date"], "Stephen Russett <stephenrussett@gmail.com>")
+
+
 	end
-
-	return parsedCommentHash
 end
-
-
-def gh_authenticate(username, password)
-	@ghClient = Octokit::Client.new(
-									:login => username.to_s, 
-									:password => password.to_s, 
-									:auto_paginate => true
-									)
-end
-
-def get_gh_user_emails
-	@ghClient.emails
-end
-
-def get_user_timezone
-	# TODO create method for getting the stored timezone of a user from DB
-end
-
-# creates the 
-def create_gh_hook(fullNameRepo)
-	@ghClient.create_hook(
-		fullNameRepo,
-		'web',
-		{
-			:url => 'http://github-reminders.com/webhook',
-			:content_type => 'json'
-		},
-		{
-			:events => ['issue_comment'],
-			:active => true
-		})
-end
-
-def send_simple_message(deliveryTime, toEmail)
-	RestClient.post "https://api:key-2yv1iyo9uad8dc02tokp1-5nzb03s7u5"\
-	"@api.mailgun.net/v2/sandbox7a90f2af1ae6406bbd6f4ef9cff652b3.mailgun.org/messages",
-	"from" => "GitHub Reminder <postmaster@sandbox7a90f2af1ae6406bbd6f4ef9cff652b3.mailgun.org>",
-	"to" => toEmail,
-	"subject" => "GitHub Reminder",
-	"text" => "This is a Github-Reminder",
-	"o:deliverytime" => deliveryTime.rfc2822
-end
-
-def process_request(issueCommentEvent, userTimezone)	
-	repo = issueCommentEvent["repository"]["full_name"]
-	issueURL = issueCommentEvent["issue"]["html_url"]
-	issueTitle = issueCommentEvent["issue"]["title"]
-	issueState = issueCommentEvent["issue"]["state"]
-	comment = issueCommentEvent["comment"]["body"]
-	commentURL = issueCommentEvent["comment"]["html_url"]
-	commentCreated_At = issueCommentEvent["comment"]["created_at"]
-	# timezoneOffset = "+05:00"
-	commentUserName = issueCommentEvent["comment"]["user"]["login"]
-	commentUserID = issueCommentEvent["comment"]["user"]["id"]
-
-	puts repo
-	puts issueURL
-	puts issueTitle
-	puts issueState
-	puts comment
-
-	Time.zone = userTimezone
-	Chronic.time_class = Time.zone
-	puts Chronic.parse(commentCreated_At).in_time_zone(userTimezone)
-	
-	# puts commentCreated_At
-	puts commentURL
-	puts "===="
-
-	puts is_Reminder_Comment?(comment)
-	parsedComment = parse_time_commit(comment, userTimezone)
-	puts parsedComment["work_date"]
-	puts parsedComment["time_comment"]
-	send_simple_message(parsedComment["work_date"], "Stephen Russett <stephenrussett@gmail.com>")
-
-
-end
-
 
 #Used for Testing
 rawDataValue = {
@@ -378,10 +342,10 @@ rawDataValue = {
 		"site_admin" => false
 	}
 }
-s
 
 
-gh_authenticate("USERNAME", "PASSWORD")
-create_gh_hook("StephenOTT/Test1")
+
+# gh_authenticate("USERNAME", "PASSWORD")
+# create_gh_hook("StephenOTT/Test1")
 # puts get_gh_user_emails.map {|email| email[:email]} 
 # process_request(rawDataValue, "US/Eastern")

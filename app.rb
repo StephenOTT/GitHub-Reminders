@@ -226,7 +226,7 @@ module GitHubReminders
 			end     
 		end
 
-		post '/webhook'
+		post '/webhook' do
 
 		end
 

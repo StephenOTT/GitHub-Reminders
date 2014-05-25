@@ -76,7 +76,7 @@ module GitHubReminders
 
 			if authenticated? == true
 
-				@dangerMessage = []
+				formErrors = []
 
 				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
 
@@ -86,34 +86,34 @@ module GitHubReminders
 
 				# Server Side validation of the Name, Email, and Timezone data fields
 				if post["fullname"].size > 255
-					@dangerMessage << "your name is too long.  Must be less than 255 characters"
+					formErrors << "your name is too long.  Must be less than 255 characters"
 				end
 
 				if post["fullname"].size == 0
-					@dangerMessage << "You must provide a name"
+					formErrors << "You must provide a name"
 				end
 
 				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
 				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
 				
 				if @githubEmailsVerfiedExistsYN == false 
-					@dangerMessage << "You do not have any verified github email addresses.  You must have a GitHub Verified email to continue"
+					formErrors << "You do not have any verified github email addresses.  You must have a GitHub Verified email to continue"
 				end
 
 				if @githubEmails.include?(post["email"]) == false
-					@dangerMessage << "Invalid Email. You must be a GitHub.com validated email"
+					formErrors << "Invalid Email. You must be a GitHub.com validated email"
 				end
 
 				@timezonesList = Sinatra_Helpers.avalaible_timezones
 				@timezonesListShort = Sinatra_Helpers.avalaible_timezones(false)
 
 				if @timezonesListShort.include?(post["timezone"]) == false
-					@dangerMessage << "invalid timezone."
+					formErrors << "invalid timezone."
 				end
-
+				flash[:danger] = formErrors
 				# Adds the data to Mongodb.  
 				# Success and Error will be returned with a String message
-				if @dangerMessage.length == 0 
+				if formErrors.length == 0 
 					createdUser = Sinatra_Helpers.create_user( get_auth_info[:userID], 
 												{:username => get_auth_info[:username],
 												 :fullname => post["fullname"],

@@ -3,6 +3,7 @@ require_relative 'sinatra_helpers'
 module GitHubReminders
 	class App < Sinatra::Base
 		enable :sessions
+		use Rack::Flash, :sweep => true
 
 		set :github_options, {
 			:scopes    => "user, admin:repo_hook",
@@ -38,13 +39,7 @@ module GitHubReminders
 				@registeredRepoList = Sinatra_Helpers.registered_repos_for_user(get_auth_info[:userID])
 				@publicHookList = Sinatra_Helpers.registered_hooks_public_all_users
 			else
-				@registeredRepoList = []
-				@registeredHookList = []
-				@publicHookList = []
-				# @dangerMessage = "Danger... Warning!  Warning"
-				@warningMessage = ["Please login to continue"]
-				# @infoMessage = "Info 123"
-				# @successMessage = "Success"
+				flash[:warning] = ["Please login to continue"]
 			end
 			erb :index
 		end
@@ -67,7 +62,7 @@ module GitHubReminders
 
 				erb :signup
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end     
 		end
@@ -136,7 +131,7 @@ module GitHubReminders
 				
 			erb :signup
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end  
 		end
@@ -158,7 +153,7 @@ module GitHubReminders
 
 			# erb :index
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end 
 		end
@@ -180,7 +175,7 @@ module GitHubReminders
 				redirect '/'
 			# erb :index
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end 
 		end
@@ -199,7 +194,7 @@ module GitHubReminders
 				redirect '/'
 			# erb :index
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end     
 		end
@@ -228,7 +223,7 @@ module GitHubReminders
 				redirect '/'
 			# erb :index
 			else
-				@warningMessage = ["You must be logged in"]
+				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated
 			end     
 		end

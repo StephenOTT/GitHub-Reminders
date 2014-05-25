@@ -502,12 +502,12 @@ module Sinatra_Helpers
 end
 
 # Debug Code
-Sinatra_Helpers.mongo_connection
+# Sinatra_Helpers.mongo_connection
 # puts Sinatra_Helpers.registered_hooks_public_all_users
 # puts Sinatra_Helpers.user_exists?(1994838)
 # Sinatra_Helpers.set_user_timezone(1994838)
 # puts Sinatra_Helpers.registered_hooks_for_user(1994838)
-puts Sinatra_Helpers.registered_repos_for_user(1994838)
+# puts Sinatra_Helpers.registered_repos_for_user(1994838)
 # Sinatra_Helpers.register_repo_for_user(1994838, {:fullreponame => "stephenott/test2"})
 # puts Sinatra_Helpers.repo_registered?(1994838, "stephenott/test1")
 # puts Sinatra_Helpers.un_register_repo_for_user(1994838, "stephenott/Test1")

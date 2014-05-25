@@ -9,3 +9,8 @@ return "Dogs"
 
 
 end
+
+get '/' do
+	"welcome"
+
+end

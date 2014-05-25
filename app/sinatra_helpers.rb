@@ -180,7 +180,7 @@ module Sinatra_Helpers
 					self.find_and_modify_document(:query => { "userid" => userid},
 													:update => {"$pull" => {'registered_hooks' => {'repo'=>repo}}}
 												)
-					return {:type => :success, :text =>"WebHook has been removed"}
+					return {:type => :success, :text =>"WebHook has been removed from the Reminder Database"}
 				rescue
 					return {:type => :failure, :text =>"something went wrong when we tried to remove the webhook from the database"}
 				end

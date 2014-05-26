@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'warden/github'
 require 'rack-flash'
-require 'newrelic_rpm'
+# require 'newrelic_rpm'
 
 module Sinatra
   module Auth

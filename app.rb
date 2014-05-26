@@ -1,6 +1,4 @@
 require_relative 'sinatra_helpers'
-require 'newrelic_rpm'
-
 
 module GitHubReminders
 	class App < Sinatra::Base

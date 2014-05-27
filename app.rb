@@ -166,6 +166,75 @@ module GitHubReminders
 			end  
 		end
 
+		# Updates a new user in the MongoDB.  Has full logic for 
+		# data validations and ensures that there is not already 
+		# the same user in the DB
+		post '/updateuser' do
+
+			post = params[:post]
+
+			if authenticated? == true
+
+				formErrors = []
+
+				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
+
+				if userExistsYN == false
+					redirect '/'					
+				end
+
+				# Server Side validation of the Name, Email, and Timezone data fields
+				if post["fullname"].size > 255
+					formErrors << "your name is too long.  Must be less than 255 characters"
+				end
+
+				if post["fullname"].size == 0
+					formErrors << "You must provide a name"
+				end
+
+				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
+				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
+				
+				if @githubEmailsVerfiedExistsYN == false 
+					formErrors << "You do not have any verified github email addresses.  You must have a GitHub Verified email to continue"
+				end
+
+				if @githubEmails.include?(post["email"]) == false
+					formErrors << "Invalid Email. You must be a GitHub.com validated email"
+				end
+
+				@timezonesList = Sinatra_Helpers.avalaible_timezones
+				@timezonesListLongName = Sinatra_Helpers.avalaible_timezones(false)
+
+				if @timezonesListLongName.include?(post["timezone"]) == false
+					formErrors << "invalid timezone."
+				end
+				flash[:danger] = formErrors
+				# Adds the data to Mongodb.  
+				# Success and Error will be returned with a String message
+				if formErrors.length == 0 
+					updatedUser = Sinatra_Helpers.update_user_profile(get_auth_info[:userID], 
+																{:name => post["fullname"],
+																 :timezone => post["timezone"],
+																 :email => post["email"]
+																 })
+
+	 				if updatedUser[:type] == :success
+						flash[:success] = [updatedUser[:text]]
+						redirect '/profile'
+					elsif updatedUser[:type] == :failure
+						flash[:warning] = [updatedUser[:text]]
+					end
+				end
+				
+			erb :user_profile
+			else
+				flash[:warning] = ["You must be logged in"]
+				erb :unauthenticated
+			end  
+		end
+
+
 		# registers a repo for a specific user
 		get '/registerrepo/:username/:repository' do
 			# post = params[:post]

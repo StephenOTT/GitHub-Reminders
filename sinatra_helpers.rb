@@ -31,7 +31,9 @@ module Sinatra_Helpers
 			end
 
 			hookExistsGHYN = self.reminder_hook_exists_in_gh?(fullNameRepo, githubAPIObject)
-			if hookExistsGHYN[0]==false and hookExistsGHYN[1][:type] == :failure
+			# Checks if the authenticated user has access to see the hooks in the repo.
+			# If they cannot see the hooks then they would not be able to create a hook.
+			if hookExistsGHYN[0] == false and hookExistsGHYN[1][:type] == :failure
 				return hookExistsGHYN[1]
 			end
 
@@ -102,7 +104,7 @@ module Sinatra_Helpers
 			repoExistsYN = self.repository_exists_in_gh?(repo, githubAPIObject)
 			if repoExistsYN == true
 				# TODO add error message handling for github api call
-				
+				# TODO clean up poor method design
 				begin
 					hooks = githubAPIObject.hooks(repo)
 					if hooks == nil
@@ -117,13 +119,13 @@ module Sinatra_Helpers
 						return [true, h.attrs[:id]]
 						break
 					else 
-						[false]
+						[false, {:type => :failure, :text => "No hook exists"}]
 					end
 				end
-				return [false]
+				return [false, {:type => :failure, :text => "No hook exists"}]
 
 			elsif repoExistsYN == false
-				return [false]
+				return [false, {:type => :failure, :text => "Repo does not exist"}]
 			end
 					
 		end

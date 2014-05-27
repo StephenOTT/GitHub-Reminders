@@ -135,9 +135,9 @@ module GitHubReminders
 				end
 
 				@timezonesList = Sinatra_Helpers.avalaible_timezones
-				@timezonesListShort = Sinatra_Helpers.avalaible_timezones(false)
+				@timezonesListLongName = Sinatra_Helpers.avalaible_timezones(false)
 
-				if @timezonesListShort.include?(post["timezone"]) == false
+				if @timezonesListLongName.include?(post["timezone"]) == false
 					formErrors << "invalid timezone."
 				end
 				flash[:danger] = formErrors

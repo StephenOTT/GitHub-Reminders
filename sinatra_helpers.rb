@@ -377,7 +377,7 @@ module Sinatra_Helpers
 				if fullname == true
 					[x.name, x.formatted_offset]
 				elsif fullname == false
-					x.formatted_offset
+					"#{x.name} #{x.formatted_offset}"
 				end	
 			end
 			timezones.uniq

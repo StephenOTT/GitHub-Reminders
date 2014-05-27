@@ -68,6 +68,35 @@ module GitHubReminders
 			end     
 		end
 
+		# Displays the current authenticated user's profile information
+		get '/profile' do
+			if authenticated? == true
+
+				userExistsYN = Sinatra_Helpers.user_exists?(github_user.id)
+				if userExistsYN == false
+					redirect '/'
+				end
+
+				userProfile = Sinatra_Helpers.get_user_profile(github_user.id)
+
+				@fullname = userProfile["name"]
+				@email = userProfile["email"]
+				@timezone = userProfile["timezone"]
+				@userid = userProfile["userid"]
+				@username = userProfile["username"]
+
+				@timezonesList = Sinatra_Helpers.avalaible_timezones
+				@githubEmails = Sinatra_Helpers.get_authenticated_github_emails(github_api)
+				@githubEmailsVerfiedExistsYN = Sinatra_Helpers.verified_emails_exist?(@githubEmails)
+
+				erb :user_profile
+			else
+				flash[:warning] = ["You must be logged in"]
+				erb :unauthenticated
+			end    
+		end
+
+
 		# Creates a new user in the MongoDB.  Has full logic for 
 		# data validations and ensures that there is not already 
 		# the same user in the DB

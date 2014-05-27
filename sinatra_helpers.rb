@@ -294,6 +294,27 @@ module Sinatra_Helpers
 			end
 		end
 
+
+		# Checks MongoDB to see if the user has a record/profile based on the userid
+		def self.get_user_profile(userid)
+			userProfile = self.aggregate([
+									{ "$match" => {userid: userid}},
+									{ "$project" => {_id:0, userid: 1, email:1, name:1, timezone:1, username:1}}
+									])
+			
+			profileCount = userProfile.count
+			
+			if profileCount == 1
+				return userProfile[0]
+			elsif profileCount > 1
+				return "Oh oh, something went wrong. Multiple user counts were found that match your user ID."
+			elsif profileCount == 0
+				return "We could not find a user profile that matches your User ID"
+			end
+		end
+
+
+
 		# Updates the user profile in MongoDB (Name, Email, Timezone)
 		def self.update_user_profile(userid, attributes = {})
 			fullname 	= attributes[:fullname]
@@ -505,6 +526,7 @@ end
 # Sinatra_Helpers.mongo_connection
 # Sinatra_Helpers.add_mongo_data({:date=>"123"})
 # puts Sinatra_Helpers.registered_hooks_public_all_users
+# puts Sinatra_Helpers.get_user_profile(1994838)
 # puts Sinatra_Helpers.user_exists?(1994838)
 # Sinatra_Helpers.set_user_timezone(1994838)
 # puts Sinatra_Helpers.registered_hooks_for_user(1994838)

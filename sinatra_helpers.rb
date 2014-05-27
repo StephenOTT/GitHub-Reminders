@@ -31,6 +31,10 @@ module Sinatra_Helpers
 			end
 
 			hookExistsGHYN = self.reminder_hook_exists_in_gh?(fullNameRepo, githubAPIObject)
+			if hookExistsGHYN[0]==false and hookExistsGHYN[1][:type] == :failure
+				return hookExistsGHYN[1]
+			end
+
 			hookExistsMongoYN = self.reminder_hook_exists_in_mongo?(userid, fullNameRepo)
 			
 			if hookExistsGHYN[0] == true
@@ -43,7 +47,7 @@ module Sinatra_Helpers
 					return self.register_hook(userid, fullNameRepo, hookExistsGHYN[1])
 				end
 					
-			elsif hookExistsGHYN[0] == false				
+			elsif hookExistsGHYN[0] == false			
 				begin
 					registered_hook = githubAPIObject.create_hook(
 																fullNameRepo,	'web',
@@ -98,11 +102,16 @@ module Sinatra_Helpers
 			repoExistsYN = self.repository_exists_in_gh?(repo, githubAPIObject)
 			if repoExistsYN == true
 				# TODO add error message handling for github api call
-				hooks = githubAPIObject.hooks(repo)
-				if hooks == nil
-					hook = []
-				end
 				
+				begin
+					hooks = githubAPIObject.hooks(repo)
+					if hooks == nil
+						hook = []
+					end
+				rescue
+					return [false, {:type => :failure, :text => "You do not have access to check for hooks in #{repo}"}]
+				end	
+
 				hooks.each do |h|
 					if h.attrs[:config][:url] == "http://www.github-reminders.com/webhook"
 						return [true, h.attrs[:id]]
@@ -112,6 +121,7 @@ module Sinatra_Helpers
 					end
 				end
 				return [false]
+
 			elsif repoExistsYN == false
 				return [false]
 			end

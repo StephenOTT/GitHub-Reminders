@@ -317,19 +317,23 @@ module Sinatra_Helpers
 
 		# Updates the user profile in MongoDB (Name, Email, Timezone)
 		def self.update_user_profile(userid, attributes = {})
-			fullname 	= attributes[:fullname]
+			name 	= attributes[:name]
 			timezone 	= attributes[:timezone]
-			email = attributes[:email]
+			email 		= attributes[:email]
 			
-			userData = {:fullname => fullname,
+			userData = {:name => name,
 						:timezone => timezone,
 						:email => email,
 						:updated_at => Time.now.utc
 						}
-
-			self.find_and_modify_document(:query => {"userid" => userid},
-											:update => {"$set" => userData}
-											)
+			begin
+				self.find_and_modify_document(:query => {"userid" => userid},
+												:update => {"$set" => userData}
+												)
+				return {:type => :success, :text =>"User Profile successfully Updated."}
+			rescue
+				return {:type => :failure, :text =>"Something went wrong. We cannot update your user profile."}
+			end
 		end
 
 		# uses the GitHub API to get the list of authenticated emails attached to 

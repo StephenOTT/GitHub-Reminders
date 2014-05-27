@@ -27,7 +27,7 @@ module Sinatra_Helpers
 			# then readds it, the old users with the hook will not be supported.
 			repoExistsYN = self.repository_exists_in_gh?(fullNameRepo, githubAPIObject)
 			if repoExistsYN == false
-				return {:type => :failure, :text => "Sorry cannot create a webhook, #{fullNameRepo} does not exists"}
+				return {:type => :norepo, :text => "Sorry cannot create a webhook, #{fullNameRepo} does not exists"}
 			end
 
 			hookExistsGHYN = self.reminder_hook_exists_in_gh?(fullNameRepo, githubAPIObject)
@@ -111,7 +111,7 @@ module Sinatra_Helpers
 						hook = []
 					end
 				rescue
-					return [false, {:type => :failure, :text => "You do not have access to check for hooks in #{repo}"}]
+					return [false, {:type => :norepo, :text => "You do not have access to check for hooks in #{repo}"}]
 				end	
 
 				hooks.each do |h|

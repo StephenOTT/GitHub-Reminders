@@ -10,9 +10,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'app'))
 
 use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
 
-run GitHubReminders::App
+# run GitHubReminders::App
+run Qless::Server.new(client)
 
 # vim:ft=ruby
-
-
-run Rack::URLMap.new("/qless" => Qless::Server.new(client))

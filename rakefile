@@ -20,7 +20,7 @@ namespace :qless do
     # Set options via environment variables
     # The only required option is QUEUES; the
     # rest have reasonable defaults.
-    ENV['REDISCLOUD_URL'] ||= 'redis://localhost:6379'
+    ENV['REDIS_URL'] ||= 'redis://localhost:6379'
     ENV['QUEUES'] ||= 'testing'
   end
 end

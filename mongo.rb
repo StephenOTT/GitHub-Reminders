@@ -18,8 +18,8 @@ module Mongo_Connection
 
 	def self.mongo_Connect(url, port, dbName, collName)
 		
-		# uri = ENV['MONGOLAB_URI']
-		uri = "mongodb://heroku_app24859406:21lerkjiqn8sh11ra2sh83lk8h@ds051858.mongolab.com:51858/heroku_app24859406"
+		uri = ENV['MONGOLAB_URI']
+		# uri = ""
 		@client = MongoClient.from_uri(uri)
 
 		# @client = MongoClient.new(url, port)

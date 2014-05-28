@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rack-flash3"
   s.add_dependency 'newrelic_rpm'
   s.add_dependency 'unicorn'
+  s.add_dependency 'rake'
  
 
   s.add_development_dependency "rake"

@@ -552,7 +552,7 @@ module Sinatra_Helpers
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			job = client.jobs[jid]
-			job.preform
+			job.data
 		end
 
 

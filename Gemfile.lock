@@ -9,6 +9,7 @@ PATH
       mongo
       newrelic_rpm
       rack-flash3
+      rake
       sinatra (~> 1.0)
       time_difference
       tzinfo

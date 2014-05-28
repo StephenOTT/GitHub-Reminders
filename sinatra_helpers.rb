@@ -541,7 +541,7 @@ module Sinatra_Helpers
 
 		def self.create_qless_job
 
-			client = Qless::Client.new(:redis => ENV["REDIS_URL"])
+			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
 			queue.put(SendEmail, {:hello => 'howdy'}, :delay => 60)
 

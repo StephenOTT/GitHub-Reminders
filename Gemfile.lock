@@ -10,6 +10,7 @@ PATH
       newrelic_rpm
       rack-flash3
       rake
+      rest-client
       sinatra (~> 1.0)
       time_difference
       tzinfo
@@ -37,6 +38,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     i18n (0.6.9)
     kgio (2.8.1)
+    mime-types (2.1)
     mongo (1.10.1)
       bson (~> 1.10.1)
     multipart-post (2.0.0)
@@ -55,6 +57,8 @@ GEM
     rake (10.3.2)
     randexp (0.1.7)
     redis (3.0.7)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.4.0)
       rspec-core (~> 2.4.0)
       rspec-expectations (~> 2.4.0)

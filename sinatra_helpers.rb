@@ -5,7 +5,7 @@ require_relative 'mongo'
 require 'active_support/core_ext/time/zones'
 require 'time_difference'
 require 'qless'
-require_relative './webhook/jobs'
+require_relative 'webhook/jobs'
 # require 'pp'
 
 module Sinatra_Helpers		

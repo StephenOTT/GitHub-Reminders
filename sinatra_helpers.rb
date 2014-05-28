@@ -5,6 +5,7 @@ require_relative 'mongo'
 require 'active_support/core_ext/time/zones'
 require 'time_difference'
 require 'qless'
+require_relative './webhook/jobs'
 # require 'pp'
 
 module Sinatra_Helpers		
@@ -543,7 +544,7 @@ module Sinatra_Helpers
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(Jobs.SendEmail, {:hello => 'howdy'}, :delay => 60)
+			queue.put(SendEmail, {:hello => 'howdy'}, :delay => 60)
 
 		end
 

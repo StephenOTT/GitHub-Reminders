@@ -4,9 +4,7 @@ require "bundler/setup"
 
 
 
-$LOAD_PATH << File.dirname(__FILE__) + '/lib'
-require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'sinatra_auth_github'))
-require File.expand_path(File.join(File.dirname(__FILE__), 'app'))
+
 
 
 # vim:ft=ruby
@@ -15,6 +13,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'app'))
 client = Qless::Client.new(:url => ENV["REDISCLOUD_URL")
 
 Rack::Builder.new do
+$LOAD_PATH << File.dirname(__FILE__) + '/lib'
+require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'sinatra_auth_github'))
+require File.expand_path(File.join(File.dirname(__FILE__), 'app'))
+
 	use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
 
   map('/') 				 { run GitHubReminders::App }

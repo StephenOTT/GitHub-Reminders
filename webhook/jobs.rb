@@ -10,7 +10,7 @@ class SendEmail
 		"@api.mailgun.net/v2/sandbox7a90f2af1ae6406bbd6f4ef9cff652b3.mailgun.org/messages",
 		"from" => "GitHub Reminder <postmaster@sandbox7a90f2af1ae6406bbd6f4ef9cff652b3.mailgun.org>",
 		"to" => "Stephen Russett <stephenrussett@gmail.com>",
-		"subject" => "GitHub Reminder - 1",
+		"subject" => "GitHub Reminder - #{Time.now}",
 		"text" => "This is a Github-Reminder"
   end
 end

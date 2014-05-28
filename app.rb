@@ -330,6 +330,13 @@ module GitHubReminders
 		end
 
 
+		get '/emailtest' do
+
+			Sinatra_Helpers.create_qless_job
+			
+		end
+
+
 		get '/logout' do
 			logout!
 			redirect '/'

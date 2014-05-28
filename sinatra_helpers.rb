@@ -4,6 +4,7 @@ require_relative 'mongo'
 # require 'active_support'
 require 'active_support/core_ext/time/zones'
 require 'time_difference'
+require 'qless'
 # require 'pp'
 
 module Sinatra_Helpers		
@@ -536,6 +537,20 @@ module Sinatra_Helpers
 			Sinatra_Helpers.mongo_connection
 			Mongo_Connection.aggregate(input)
 		end
+
+
+		def self.create_qless_job
+
+			client = Qless::Client.new
+			queue = client.queues['testing']
+			queue.put(SendEmail, {:hello => 'howdy'}, :delay => 60)
+
+		end
+
+
+
+
+
 end
 
 # Debug Code

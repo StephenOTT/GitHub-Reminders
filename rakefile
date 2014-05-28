@@ -15,7 +15,7 @@ require 'qless/tasks'
 
 namespace :qless do
   task :setup do
-    require_relative './qless/qless_sampler' # to ensure all job classes are loaded
+    require_relative './webhook/jobs' # to ensure all job classes are loaded
 
     # Set options via environment variables
     # The only required option is QUEUES; the

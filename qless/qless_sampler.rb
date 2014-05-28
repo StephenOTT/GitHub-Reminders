@@ -6,7 +6,7 @@ require 'pp'
 
 
 # Connect to localhost
-client = Qless::Client.new
+# client = Qless::Client.new
 # Connect to somewhere else
 # client = Qless::Client.new(:host => 'localhost', :port => 6379)
 

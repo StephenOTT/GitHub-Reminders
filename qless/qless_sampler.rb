@@ -24,8 +24,8 @@ class MyJobClass
   end
 end
 
-job = client.jobs['570ff64985364f24b398979aedfcc386']
-pp job.scheduleddate
+# job = client.jobs['570ff64985364f24b398979aedfcc386']
+# pp job.scheduleddate
 # This referdependencies new or existing queue 'testing'
 # queue = client.queues['testing']
 # Let's add a job, with some data. Returns Job ID

@@ -1,6 +1,5 @@
 require_relative 'sinatra_helpers'
 
-
 module GitHubReminders
 	class App < Sinatra::Base
 

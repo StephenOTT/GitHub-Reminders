@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'unicorn'
   s.add_dependency 'rake'
   s.add_dependency 'rest-client'
-  s.add_dependency 'sinatra-initializers'
+  # s.add_dependency 'sinatra-initializers'
  
 
   s.add_development_dependency "rake"

@@ -8,7 +8,7 @@ preload_app false
 
 worker_processes Integer(ENV['UNICORN_WORKERS'] || 2)
 timeout Integer(ENV['UNICORN_TIMEOUT'] || 25)
-listen ENV['PORT'], :backlog => Integer(ENV['UNICORN_BACKLOG'] || 200)
+# listen ENV['PORT'], :backlog => Integer(ENV['UNICORN_BACKLOG'] || 200)
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do

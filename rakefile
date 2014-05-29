@@ -1,4 +1,5 @@
 require 'qless/tasks'
+require 'qless'
 
 # task :default => [:spec]
 

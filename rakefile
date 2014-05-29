@@ -20,7 +20,7 @@ namespace :qless do
     puts ENV['REDIS_URL']
     # 'redis://localhost:6379'
     ENV['QUEUES'] ||= 'testing'
-    ENV['INTERVAL'] ||= '5' # 10 seconds
+    ENV['INTERVAL'] ||= '10' # 10 seconds
     ENV['VERBOSE'] ||= 'true'
   end
 end

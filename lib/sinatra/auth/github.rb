@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'warden/github'
 require 'rack-flash'
-require 'sinatra-initializers'
 
 
 module Sinatra

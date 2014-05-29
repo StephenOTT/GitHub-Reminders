@@ -1,5 +1,5 @@
 require_relative 'sinatra_helpers'
-require 'sinatra-initializers'
+
 
 module GitHubReminders
 	class App < Sinatra::Base
@@ -14,7 +14,6 @@ module GitHubReminders
 		}
 
 		register Sinatra::Auth::Github
-		register Sinatra::Initializers
 
 		helpers do
 

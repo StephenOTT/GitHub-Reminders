@@ -572,7 +572,7 @@ module Sinatra_Helpers
 									}, 
 									:delay => options[:delay] ||= 0,
 									:tags => ["User|#{options[:username]}",
-											 "Repo|#{options[:username]}",
+											 "Repo|#{options[:repo]}",
 											 "Issue|#{options[:issueNumber]}"])
 
 		end

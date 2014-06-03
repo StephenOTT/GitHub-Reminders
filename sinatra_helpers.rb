@@ -570,8 +570,8 @@ module Sinatra_Helpers
 									:body => options[:body],
 									:subject => options[:subject]
 									}, 
-									:delay = options[:delay],
-									:tags = ["User|#{options[:username]}",
+									:delay => options[:delay],
+									:tags => ["User|#{options[:username]}",
 											 "Repo|#{options[:username]}",
 											 "Issue|#{options[:issueNumber]}"])
 

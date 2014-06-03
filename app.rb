@@ -331,9 +331,7 @@ module GitHubReminders
 
 
 		get '/emailtest' do
-
 			Sinatra_Helpers.create_qless_job
-
 		end
 
 		get '/runjob/:jid' do

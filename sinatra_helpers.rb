@@ -560,14 +560,33 @@ module Sinatra_Helpers
 			Mongo_Connection.aggregate(input)
 		end
 
-
-		def self.create_qless_job
+		# Method used for debugging / Email testing.
+		# This is the model method for generating a email.
+		def self.create_qless_job(options = {})
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(SendEmail, {:hello => 'howdy'}, :delay = 5)
+			queue.put(SendEmail, {:toEmail => options[:toEmail],
+									:body => options[:body],
+									:subject => options[:subject]
+									}, 
+									:delay = options[:delay],
+									:tags = ["User|#{options[:username]}",
+											 "Repo|#{options[:username]}",
+											 "Issue|#{options[:issueNumber]}"])
 
 		end
+
+		# Sends comment to Qless for validation.  Other processes are handled by Qless
+		def self.send_comment_to_qless(comment)
+			client = Qless::Client.new(:url => ENV["REDIS_URL"])
+			queue = client.queues['Comment Validation']
+			queue.put(CheckIfReminder, {:comment => comment})
+
+		end
+
+
+		
 
 		def self.run_qless_job(jid)
 

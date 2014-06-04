@@ -19,7 +19,7 @@ end
 
 class CheckIfReminder
 	def self.preform(job)
-
+		puts "dog"
 
 	end
 end

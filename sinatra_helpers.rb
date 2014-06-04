@@ -29,6 +29,7 @@ class CheckIfReminder
   	# Future code for loading html template
 	# file = File.open("path-to-file.tar.gz", "txt")
 	# contents = file.read
+	puts "dog11"
   end
 end
 

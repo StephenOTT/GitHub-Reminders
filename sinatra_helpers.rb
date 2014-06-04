@@ -24,6 +24,14 @@ class SendEmail
   end
 end
 
+class CheckIfReminder
+  def self.perform(job)
+  	# Future code for loading html template
+	# file = File.open("path-to-file.tar.gz", "txt")
+	# contents = file.read
+  end
+end
+
 
 
 

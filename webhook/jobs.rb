@@ -17,12 +17,12 @@ end
 
 
 
-# class CheckIfReminder
-# 	def self.preform(job)
+class CheckIfReminder
+	def self.preform(job)
 
 
-# 	end
-# end
+	end
+end
 
 
 # class ParseReminder

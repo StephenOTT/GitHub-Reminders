@@ -589,7 +589,7 @@ module Sinatra_Helpers
 		# Sends comment to Qless for validation.  Other processes are handled by Qless
 		def self.send_comment_to_qless(comment)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
-			queue = client.queues['Comment Validation']
+			queue = client.queues['testing']
 			queue.put(CheckIfReminder, {:comment => comment})
 
 		end

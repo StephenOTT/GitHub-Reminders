@@ -331,15 +331,20 @@ module GitHubReminders
 
 
 		get '/emailtest' do
+			if authenticated? == true
+				userProfile = Sinatra_Helpers.get_user_profile(get_auth_info[:userID])
+				Sinatra_Helpers.create_qless_job({:username => "StephenOTT", 
+													:repo => "StephenOTT/Test1", 
+													:issueNumber => 123,
+													:toEmail => "#{userProfile["name"]} <#{userProfile["email"]}>",
+													:subject => "Test Subject 2",
+													:body => "Test Body 123",
+													:delay => 0})
+			else
+				flash[:warning] = ["You must be logged in"]
+				erb :unauthenticated
+			end  
 
-			userProfile = Sinatra_Helpers.get_user_profile(get_auth_info[:userID])
-			Sinatra_Helpers.create_qless_job({:username => "StephenOTT", 
-												:repo => "StephenOTT/Test1", 
-												:issueNumber => 123,
-												:toEmail => "#{userProfile["name"]} <#{userProfile["email"]}>",
-												:subject => "Test Subject 2",
-												:body => "Test Body 123",
-												:delay => 0})
 		end
 
 		get '/runjob/:jid' do

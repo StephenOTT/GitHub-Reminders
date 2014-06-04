@@ -18,7 +18,7 @@ end
 
 
 class CheckIfReminder
-	def self.preform(job)
+	def self.perform(job)
 		puts "dog"
 
 	end

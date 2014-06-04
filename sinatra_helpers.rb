@@ -566,11 +566,11 @@ module Sinatra_Helpers
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(SendEmail, {:toEmail => "stephenrussett@gmail.com",
-									:body => "Body Test",
-									:subject => "Reminder Test"
+			queue.put(SendEmail, {:toEmail => options[:toEmail],
+									:body => options[:body],
+									:subject => options[:subject]
 									}, 
-									:delay => 0,
+									:delay => options[:delay],
 									# :tags => ["User|#{options[:username]}",
 									# 		 "Repo|#{options[:repo]}",
 									# 		 "Issue|#{options[:issueNumber]}"]

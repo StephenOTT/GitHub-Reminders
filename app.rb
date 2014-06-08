@@ -326,8 +326,7 @@ module GitHubReminders
 		end
 
 		post '/webhook' do
-			puts params
-			Sinatra_Helpers.send_comment_to_qless(params["issue"])
+			Sinatra_Helpers.send_comment_to_qless(params[:result])
 		end
 
 

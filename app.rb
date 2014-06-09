@@ -2,7 +2,7 @@ require_relative 'sinatra_helpers'
 
 module GitHubReminders
 	class App < Sinatra::Base
-
+		set :logging, :true
 		enable :sessions
 		use Rack::Flash, :sweep => true
 
@@ -326,9 +326,10 @@ module GitHubReminders
 		end
 
 		post '/webhook' do
-			puts params[:payload].to_s
+			puts params[:data]
+			puts params.inspect
 
-			Sinatra_Helpers.send_comment_to_qless(params[:data].to_s)
+			Sinatra_Helpers.send_comment_to_qless(params[:data])
 		end
 
 

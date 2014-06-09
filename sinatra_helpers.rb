@@ -591,7 +591,7 @@ module Sinatra_Helpers
 		def self.send_comment_to_qless(comment)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(CheckIfReminder, {:comment => comment})
+			queue.put(CheckIfReminder, {"comment" => comment})
 
 		end
 

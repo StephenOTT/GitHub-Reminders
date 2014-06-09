@@ -331,7 +331,7 @@ module GitHubReminders
 			# return params.inspect.to_s
 		
 		    request.body.rewind
-		    request_payload = JSON.parse(request.body.read)
+		    request_payload = request.body.read
 			return request_payload
 
 

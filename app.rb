@@ -329,7 +329,7 @@ module GitHubReminders
 			puts params[:data]
 			puts params.inspect
 
-			Sinatra_Helpers.send_comment_to_qless(params[:data])
+			# Sinatra_Helpers.send_comment_to_qless(params[:data])
 		end
 
 

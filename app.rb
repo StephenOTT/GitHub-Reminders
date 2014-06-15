@@ -93,7 +93,7 @@ module GitHubReminders
 				erb :user_profile
 			else
 				flash[:warning] = ["You must be logged in"]
-				erb :unauthenticated
+				erb :about
 			end    
 		end
 

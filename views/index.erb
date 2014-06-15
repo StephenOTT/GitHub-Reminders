@@ -1,167 +1,165 @@
-<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<h3>
-				Personally Registered Repositories.
-			</h3>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Repository</th>
-						<th>Status</th>
-						<th>Registered At</th>
-						<th>Last Updated At</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if @registeredRepoList %>
-						<% @registeredRepoList.each do |r| %>
-							<tr>
-								<td><%= r["registered_repos"]["repo"] %></td>
-								<td><%= r["registered_repos"]["active"] %></td>
-								<td><%= r["registered_repos"]["created_at"] %></td>
-								<td><%= r["registered_repos"]["updated_at"] %></td>
-								<td>
-									<div class="btn-group">
-										 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-										<ul class="dropdown-menu">
-											<li>
-												<a href="/unregisterrepo/<%= r["registered_repos"]["repo"] %>">Un-Register Repo</a>
-											</li>
-											<li class="disabled">
-												<a href="#">Change Status</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>				
-						<% end %>
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<h3>
+			Personally Registered Repositories.
+		</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Repository</th>
+					<th>Status</th>
+					<th>Registered At</th>
+					<th>Last Updated At</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if @registeredRepoList %>
+					<% @registeredRepoList.each do |r| %>
+						<tr>
+							<td><%= r["registered_repos"]["repo"] %></td>
+							<td><%= r["registered_repos"]["active"] %></td>
+							<td><%= r["registered_repos"]["created_at"] %></td>
+							<td><%= r["registered_repos"]["updated_at"] %></td>
+							<td>
+								<div class="btn-group">
+									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/unregisterrepo/<%= r["registered_repos"]["repo"] %>">Un-Register Repo</a>
+										</li>
+										<li class="disabled">
+											<a href="#">Change Status</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>				
 					<% end %>
-				</tbody>
-			</table>
-			<br><br>
-			<h3>
-				Personally Registered WebHooks.
-			</h3>
+				<% end %>
+			</tbody>
+		</table>
+		<br><br>
+		<h3>
+			Personally Registered WebHooks.
+		</h3>
 
-			 <a id="modal-939116" href="#modal-container-939116" role="button" class="btn btn-default" data-toggle="modal">Create and Register Repository WebHook</a>
-						
-			<div class="modal fade" id="modal-container-939116" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title" id="myModalLabel">
-								Register Repository WebHook
-							</h4>
-						</div>
-						<div class="modal-body">
-							<div class="container">
-								<div class="row clearfix">
-									<div class="col-md-6 column">
-										<form class="form-inline " role="form", action="registerhook", method="get">
-											<div class="form-group">
-												 <label for="username">Username</label><input type="text" class="form-control" id="username", name="username" />
-											</div>
-											<div class="form-group">
-												 <label for="repository">Repository</label><input type="text" class="form-control" id="repository", name="repository" />
-											</div>
-											<button type="submit" class="btn btn-default">Submit</button>
-										</form>
-									</div>
+		 <a id="modal-939116" href="#modal-container-939116" role="button" class="btn btn-default" data-toggle="modal">Create and Register Repository WebHook</a>
+					
+		<div class="modal fade" id="modal-container-939116" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel">
+							Register Repository WebHook
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<div class="row clearfix">
+								<div class="col-md-6 column">
+									<form class="form-inline " role="form", action="registerhook", method="get">
+										<div class="form-group">
+											 <label for="username">Username</label><input type="text" class="form-control" id="username", name="username" />
+										</div>
+										<div class="form-group">
+											 <label for="repository">Repository</label><input type="text" class="form-control" id="repository", name="repository" />
+										</div>
+										<button type="submit" class="btn btn-default">Submit</button>
+									</form>
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer">
-							 <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-						</div>
+					</div>
+					<div class="modal-footer">
+						 <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
 					</div>
 				</div>
 			</div>
-			<br><br>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Repository</th>
-						<th>Status</th>
-						<th>Public?</th>
-						<th>Registered At</th>
-						<th>Last Updated At</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if @registeredHookList %>
-						<% @registeredHookList.each do |r| %>
-							<tr>
-								<td><%= r["registered_hooks"]["repo"] %></td>
-								<td><%= r["registered_hooks"]["active"] %></td>
-								<td><%= r["registered_hooks"]["public"] %></td>
-								<td><%= r["registered_hooks"]["created_at"] %></td>
-								<td><%= r["registered_hooks"]["updated_at"] %></td>
-								<td>
-									<div class="btn-group">
-										 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-										<ul class="dropdown-menu">
-											<li>
-												<a href="/unregisterhook/<%= r["registered_hooks"]["repo"] %>">Un-Register WebHook</a>
-											</li>
-											<li class="disabled">
-												<a href="#">Change Status</a>
-											</li>
-											<li class="disabled">
-												<a href="#">Change Visibility</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>				
-						<% end %>
-					<% end %>
-				</tbody>
-			</table>
-			<br><br>
-			<h3>
-				Public Listing of avaliable Repositories with GitHub-Reminder WebHooks.
-			</h3>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Repository</th>
-						<th>Status</th>
-						<th>Public?</th>
-						<th>Registered At</th>
-						<th>Last Updated At</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% if @publicHookList %>
-						<% @publicHookList.each do |r| %>
-							<tr>
-								<td><%= r["registered_hooks"]["repo"] %></td>
-								<td><%= r["registered_hooks"]["active"] %></td>
-								<td><%= r["registered_hooks"]["public"] %></td>
-								<td><%= r["registered_hooks"]["created_at"] %></td>
-								<td><%= r["registered_hooks"]["updated_at"] %></td>
-								<td>
-									<div class="btn-group">
-										 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-										<ul class="dropdown-menu">
-											<li>
-												<a href="/registerrepo/<%= r["registered_hooks"]["repo"] %>">Register Repo</a>
-											</li>
-											<li>
-												<a href="/unregisterrepo/<%= r["registered_hooks"]["repo"] %>">Un-Register Repo</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>				
-						<% end %>
-					<% end %>
-				</tbody>
-			</table>
 		</div>
+		<br><br>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Repository</th>
+					<th>Status</th>
+					<th>Public?</th>
+					<th>Registered At</th>
+					<th>Last Updated At</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if @registeredHookList %>
+					<% @registeredHookList.each do |r| %>
+						<tr>
+							<td><%= r["registered_hooks"]["repo"] %></td>
+							<td><%= r["registered_hooks"]["active"] %></td>
+							<td><%= r["registered_hooks"]["public"] %></td>
+							<td><%= r["registered_hooks"]["created_at"] %></td>
+							<td><%= r["registered_hooks"]["updated_at"] %></td>
+							<td>
+								<div class="btn-group">
+									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/unregisterhook/<%= r["registered_hooks"]["repo"] %>">Un-Register WebHook</a>
+										</li>
+										<li class="disabled">
+											<a href="#">Change Status</a>
+										</li>
+										<li class="disabled">
+											<a href="#">Change Visibility</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>				
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<br><br>
+		<h3>
+			Public Listing of avaliable Repositories with GitHub-Reminder WebHooks.
+		</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Repository</th>
+					<th>Status</th>
+					<th>Public?</th>
+					<th>Registered At</th>
+					<th>Last Updated At</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if @publicHookList %>
+					<% @publicHookList.each do |r| %>
+						<tr>
+							<td><%= r["registered_hooks"]["repo"] %></td>
+							<td><%= r["registered_hooks"]["active"] %></td>
+							<td><%= r["registered_hooks"]["public"] %></td>
+							<td><%= r["registered_hooks"]["created_at"] %></td>
+							<td><%= r["registered_hooks"]["updated_at"] %></td>
+							<td>
+								<div class="btn-group">
+									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/registerrepo/<%= r["registered_hooks"]["repo"] %>">Register Repo</a>
+										</li>
+										<li>
+											<a href="/unregisterrepo/<%= r["registered_hooks"]["repo"] %>">Un-Register Repo</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>				
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>
 	</div>
 </div>

@@ -1,48 +1,46 @@
-<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<div class="page-header">
-				<h1>
-					User Profile<br> <small>ADD USER PROFILE IMAGE AND BASIC DEATILS BELOW</small>
-				</h1>
-			</div>
-			<p>
-				Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>. Aliquam eget sapien sapien. Curabitur in metus urna.
-			</p>
-			<form class="form-horizontal" role="form", action="updateuser", method="post">
-				<div class="form-group">
-					 <label for="fullname" class="col-sm-2 control-label">Name</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="fullname" name="post[fullname]" value="<%= @fullname %>"  />
-					</div>
-				</div>
-				<div class="form-group">
-					 <label for="email" class="col-sm-2 control-label">Email (Must be verified by GitHub)</label>
-					<div class="col-sm-10">
-						<select name="post[email]", id="email">
-							<% @githubEmails.each do |e| %>
-								<option <%= e == @email ? "selected" : nil %> value= "<%= "#{e}" %>" ><%= e %></option>
-							<% end %>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					 <label for="timezone" class="col-sm-2 control-label">Timezone (This is important for ensuring Reminders are scheduled for the correct Date and Time)</label>
-					<div class="col-sm-10">
-						<select name="post[timezone]", id="timezone">
-							<% @timezonesList.each do |t| %>
-								<option <%= "#{t[0]} #{t[1]}" == @timezone ? "selected" : nil %> value= "<%= "#{t[0]} #{t[1]}" %>" ><%= "#{t[0]}  #{t[1]}" %></option>
-							<% end %>
-						</select>
-					</div>
-				</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						 <button type="submit" class="btn btn-default">Update Profile</button>
-					</div>
-				</div>
-			</form>
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="page-header">
+			<h1>
+				User Profile<br> <small>ADD USER PROFILE IMAGE AND BASIC DEATILS BELOW</small>
+			</h1>
 		</div>
+		<p>
+			Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>. Aliquam eget sapien sapien. Curabitur in metus urna.
+		</p>
+		<form class="form-horizontal" role="form", action="updateuser", method="post">
+			<div class="form-group">
+				 <label for="fullname" class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="fullname" name="post[fullname]" value="<%= @fullname %>"  />
+				</div>
+			</div>
+			<div class="form-group">
+				 <label for="email" class="col-sm-2 control-label">Email (Must be verified by GitHub)</label>
+				<div class="col-sm-10">
+					<select name="post[email]", id="email">
+						<% @githubEmails.each do |e| %>
+							<option <%= e == @email ? "selected" : nil %> value= "<%= "#{e}" %>" ><%= e %></option>
+						<% end %>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				 <label for="timezone" class="col-sm-2 control-label">Timezone (This is important for ensuring Reminders are scheduled for the correct Date and Time)</label>
+				<div class="col-sm-10">
+					<select name="post[timezone]", id="timezone">
+						<% @timezonesList.each do |t| %>
+							<option <%= "#{t[0]} #{t[1]}" == @timezone ? "selected" : nil %> value= "<%= "#{t[0]} #{t[1]}" %>" ><%= "#{t[0]}  #{t[1]}" %></option>
+						<% end %>
+					</select>
+				</div>
+			</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					 <button type="submit" class="btn btn-default">Update Profile</button>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>

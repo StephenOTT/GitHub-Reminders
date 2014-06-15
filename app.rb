@@ -39,10 +39,11 @@ module GitHubReminders
 				@registeredHookList = Sinatra_Helpers.registered_hooks_for_user(get_auth_info[:userID])
 				@registeredRepoList = Sinatra_Helpers.registered_repos_for_user(get_auth_info[:userID])
 				@publicHookList = Sinatra_Helpers.registered_hooks_public_all_users
+			erb :index
 			else
 				flash[:warning] = ["Please login to continue"]
+			erb :about
 			end
-			erb :index
 		end
 
 		# /signup is a landing page with a form for the user to sign up.  

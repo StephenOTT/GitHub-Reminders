@@ -327,7 +327,7 @@ module GitHubReminders
 		end
 
 		post '/webhook' do
-		
+		# TODO add rack level IP blocking to only allow GitHub.com IP addresses.
 		    request.body.rewind
 		    request_payload = request.body.read
 

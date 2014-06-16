@@ -6,7 +6,7 @@ $LOAD_PATH << File.dirname(__FILE__) + '/lib'
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'sinatra_auth_github'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'app'))
 
-use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
+use Rack::Static, :urls => ["/css", "/img", "/js", "/images"], :root => "public"
 
 run GitHubReminders::App
 

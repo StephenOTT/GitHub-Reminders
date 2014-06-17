@@ -35,9 +35,10 @@
 						<li><a href="#">Help</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Link</a></li>
 							<% if authenticated? == true %>
 									<li>
-										<strong><%= get_auth_info[:username] %></strong>
+										<strong><p><%= get_auth_info[:username] %></p></strong>
 									</li>
 							<% end %>
 							<li class="dropdown">

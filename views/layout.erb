@@ -34,14 +34,12 @@
 						<li><a href="#">Your Reminders</a></li>
 						<li><a href="#">Help</a></li>
 					</ul>
-					<% if authenticated? == true %>
 					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<strong><%= get_auth_info[:username] %></strong>
-						</li>
-					</ul>
-					<% end %>
-					<ul class="nav navbar-nav navbar-right">
+							<% if authenticated? == true %>
+									<li>
+										<strong><%= get_auth_info[:username] %></strong>
+									</li>
+							<% end %>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									<span class="glyphicon glyphicon-cog"></span>

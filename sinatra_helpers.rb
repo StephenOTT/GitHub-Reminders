@@ -88,11 +88,10 @@ module Sinatra_Helpers
 																	:active => true
 																})
 
-				rescue StandardError => e
-					message = e.errors.map!{|error| error[:message]}
-					return {:type => :failure, :text => message}
+				rescue Octokit::NotFound
+					# message = e.errors.map!{|error| error[:message]}
+					return {:type => :failure, :text => "Cannot access the Repository #{fullNameRepo}.  You likely do not have permission to create WebHooks for this Repository."}
 				end
-				return {:type => :success, :text=>registered_hook}
 
 				# TODO rework this method call for proper handling of a message 
 				# back to the user to indicate that the hook was registered in mongo

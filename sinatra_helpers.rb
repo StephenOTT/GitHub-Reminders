@@ -60,7 +60,7 @@ module Sinatra_Helpers
 			# Checks if the authenticated user has access to see the hooks in the repo.
 			# If they cannot see the hooks then they would not be able to create a hook.
 			if hookExistsGHYN[0] == false and hookExistsGHYN[1][:type] == :norepo
-				return {:type => hookExistsGHYN[1][:type], :text => hookExistsGHYN[1][:text]}
+				return {:type => :failure, :text => hookExistsGHYN[1][:text]}
 			end
 
 			hookExistsMongoYN = self.reminder_hook_exists_in_mongo?(userid, fullNameRepo)

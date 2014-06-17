@@ -81,16 +81,16 @@ module Sinatra_Helpers
 			# if hook does not exist in GitHub	
 			elsif hookExistsGHYN[0] == false			
 				begin
-					registered_hook = githubAPIObject.create_hook(
-																fullNameRepo,	'web',
-																{
-																	:url => 'http://www.github-reminders.com/webhook',
-																	:content_type => 'json'
-																},
-																{
-																	:events => ['issue_comment'],
-																	:active => true
-																})
+					githubAPIObject.create_hook(
+												fullNameRepo,	'web',
+												{
+													:url => 'http://www.github-reminders.com/webhook',
+													:content_type => 'json'
+												},
+												{
+													:events => ['issue_comment'],
+													:active => true
+												})
 
 				rescue Octokit::NotFound
 					# message = e.errors.map!{|error| error[:message]}

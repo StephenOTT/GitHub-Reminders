@@ -65,16 +65,20 @@ module Sinatra_Helpers
 
 			hookExistsMongoYN = self.reminder_hook_exists_in_mongo?(userid, fullNameRepo)
 			
+			#If hook exists in Github
 			if hookExistsGHYN[0] == true
+				# if hook exists in Mongo
 				if hookExistsMongoYN == true
 					return {:type => :failure, :text => "Hook already exists in the repo: #{fullNameRepo}. No need to create another hook"}
+				
+				# if hook does not exist in mongo
 				elsif hookExistsMongoYN == false
 					# TODO rework this method call for proper handling of a message 
 					# back to the user to indicate that the hook was registered 
 					# from a already existing hook in GH
 					return self.register_hook(userid, fullNameRepo, hookExistsGHYN[1])
 				end
-					
+			# if hook does not exist in GitHub	
 			elsif hookExistsGHYN[0] == false			
 				begin
 					registered_hook = githubAPIObject.create_hook(

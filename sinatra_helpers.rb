@@ -92,6 +92,7 @@ module Sinatra_Helpers
 					message = e.errors.map!{|error| error[:message]}
 					return {:type => :failure, :text => message}
 				end
+				return {:type => :success, :text=>registered_hook}
 
 				# TODO rework this method call for proper handling of a message 
 				# back to the user to indicate that the hook was registered in mongo
@@ -116,7 +117,7 @@ module Sinatra_Helpers
 				self.find_and_modify_document(:query => {"userid" => userid},
 											  :update => {"$push" => {"registered_hooks" => registered_hook_info }}
 											)
-				return {:type => :success, :text=>"WebHook successfully created"}
+				return 
 			rescue
 				return {:type => :failure, :text=>"Something went wrong when we tried to register you hook"}
 			end

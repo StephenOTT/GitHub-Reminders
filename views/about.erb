@@ -45,7 +45,7 @@
 						<p>
 							Post a Comment in the issue queue:
 							<br>
-							<code>:alarm_clock: Tomorrow at 9am | Ensure images have been approved by client</code>
+							<pre>:alarm_clock: Tomorrow at 9am | Check Deployment</pre>
 						</p>
 <!-- 							<p>
 							<a class="btn btn-primary" href="#">Action</a> <a class="btn" href="#">Action</a>
@@ -76,23 +76,28 @@
 			</h3>
 			<p>
 				<h4>GitHub-Reminders Syntax</h4>
-				This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+				Our Syntax is simple:
+				<br>
+				<code>:alarm_clock: DateTime | Reminder Message</code>
+				<br>
+				We use the <code>|</code> (pipe, key above the enter/return key) as the separator between the DateTime phrase and your reminder.
+
 			</p>
 			<p>
 				<h4>Natural Language Date and Time Parsing</h4>
-				This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+				GitHub-Reminders is built using Chronic gem which provides natural language parsing.  Any Natural Language Date and Time that Chronic supports, GitHub-Reminders will support.  If you only provide a time and not a date, we assume you referring the current date.
 			</p>
 			<p>
 				<h4>Your Email Reminder</h4>
-				This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+				Your email reminder is returned at the specific date and time you indicated in your GitHub-Reminder Syntax.  We use the timezone from the profile you created when signing up for GitHub-Reminders to ensure you get your email at the right time.  Emails are also fully responsive so they will display in a mobile friendly format.
 			</p>
 			<p>
 				<h4>Registering WebHooks, What, Why, and How?</h4>
-				This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+				A webhook is a web service call to the GitHub-Reminders server that is send by GitHub.com.  We have GitHub.com send these web service calls whenever a comment is made in the Issue queue.
 			</p>	
 			<p>
 				<h4>Registering Repositories, What, Why, and How?</h4>
-				This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+				When someone registers a webhook, we make that webhook available to all GitHub-Reminder users.  This means that as long as you have access to the Issue Queue, and a webhook has been registered for the repository, you can Register the Repository so you receive reminders when you use the GitHub-Reminder Syntax.  Registering a Repository tells GitHub-Reminders that you want to receive reminders.
 			</p>												
 <!-- 				<p>
 				<a class="btn btn-primary btn-large" href="#">Learn more</a>

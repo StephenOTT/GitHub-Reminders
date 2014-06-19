@@ -374,7 +374,7 @@ module GitHubReminders
 				# end
 
 				# redirect ''
-			erb :reminders_listing
+			erb :reminder_listing
 			else
 				flash[:warning] = ["You must be logged in"]
 				erb :unauthenticated

@@ -1,0 +1,6 @@
+<div class="page-header">
+  <h2>Jobs tagged '<%= tag %>'</h2>
+</div>
+
+<%= erb :_job_list, :locals => { :jobs => jobs, :queues => queues } %>
+

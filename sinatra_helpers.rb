@@ -614,7 +614,12 @@ module Sinatra_Helpers
 					end
 					
 					scheduledDateTime = job.data["scheduledDateTime"]
+					
+					begin
 					temphash["scheduledDate"] = DateTime.strptime("#{scheduledDateTime}", '%s').in_time_zone(userTimezone)
+					rescue
+						temphash["scheduledDate"] = "error"
+					end
 					
 					temphash["jobState"] = job.state
 					emailJobs << temphash

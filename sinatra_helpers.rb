@@ -594,40 +594,32 @@ module Sinatra_Helpers
 		end
 
 		def self.get_email_jobs_for_user(userid)
+
+			userTimezone = get_user_profile(userid)["timezone"]
+			
+
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			userJobs = client.jobs.tagged("UserID=#{userid}")
 			userJobs = userJobs["jobs"]
-			# emailJobs = userJobs.klass("SendEmail")
-			# emailJobs.tags("UserID=#{userid}")
-			# return emailJobs
-			# emailJobs = client.jobs['23e098b3ebce42078fe9c23ed5babd4c']
+
 			emailJobs = []
 			userJobs.each do |x|
 				job = client.jobs[x]
-				# 
-				# emailJobs << job.klass.to_s
-				# emailJob = client.jobs[x]
 				if job.klass.to_s == "SendEmail"
 					temphash = {}
 					job.tags.each do |t|
 						temparray = t.split("=")
 						temphash[temparray[0]] = temparray[1]
 					end
-					temphash["scheduledDate"] = job.data["scheduledDateTime"]
+					temphash["scheduledDate"] = DateTime.strptime(job.data["scheduledDateTime"], '%s').in_time_zone(userTimezone[0..-8])
+
 					temphash["jobState"] = job.state
 					emailJobs << temphash
 				end
 			end
 			return emailJobs
-
 		end
 
-		# def self.run_qless_job(jid)
-
-		# 	client = Qless::Client.new(:url => ENV["REDIS_URL"])
-		# 	job = client.jobs[jid]
-		# 	job.data
-		# end
 
 end
 

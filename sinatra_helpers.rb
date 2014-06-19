@@ -595,13 +595,15 @@ module Sinatra_Helpers
 		def self.get_email_jobs_for_user(userid)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			userJobs = client.jobs.tagged("UserID=#{userid}")
+			userJobs = userJobs["jobs"]
 			# emailJobs = userJobs.klass("SendEmail")
 			# emailJobs.tags("UserID=#{userid}")
 			# return emailJobs
 			emailJobs = []
-			userJobs["jobs"].each do |x|
-				if client.jobs[x].klass == "SendEmail"
-					emailJobs << client.jobs[x].data
+			userJobs.each do |x|
+				emailJob = client.jobs[x]
+				if emailJob.klass == "SendEmail"
+					emailJobs << emailJob.data
 				end
 			end
 			return emailJobs

@@ -598,6 +598,13 @@ module Sinatra_Helpers
 			# emailJobs = userJobs.klass("SendEmail")
 			# emailJobs.tags("UserID=#{userid}")
 			# return emailJobs
+			emailJobs = []
+			userJobs["jobs"].each do |x|
+				if client.job(x).klass == "SendEmail"
+					emailJobs << client.job(x).data
+				end
+			end
+			return emailJobs
 
 		end
 

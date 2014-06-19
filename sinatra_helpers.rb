@@ -1,4 +1,5 @@
 # require 'qless'
+require 'bundler/setup'
 require_relative 'mongo'
 # require 'octokit'
 # require 'active_support'

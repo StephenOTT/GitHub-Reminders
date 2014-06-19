@@ -612,10 +612,10 @@ module Sinatra_Helpers
 						temphash[temparray[0]] = temparray[1]
 					end
 					
-					scheduledDateTime = job.data["scheduledDateTime"]
+					scheduledDateTime = job.data["scheduledDateTime"].to_s
 					
 					if scheduledDateTime != nil
-						temphash["scheduledDate"] = DateTime.strptime(job.data["scheduledDateTime"], '%s').in_time_zone(userTimezone[0..-8])
+						temphash["scheduledDate"] = DateTime.strptime(scheduledDateTime, '%s').in_time_zone(userTimezone[0..-8])
 					else
 						temphash["scheduledDate"] = nil
 					end

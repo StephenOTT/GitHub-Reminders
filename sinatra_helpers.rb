@@ -601,14 +601,14 @@ module Sinatra_Helpers
 			# return emailJobs
 			emailJobs = []
 			userJobs.each do |x|
-				job = client.jobs[x.to_s]
-				emailJobs << job.klass.to_s
+				job = client.jobs[x]
+				# emailJobs << job.klass.to_s
 			# 	emailJob = client.jobs[x]
 			# 	# if emailJob.klass == "SendEmail"
 			# 		emailJobs << emailJob.data
 			# 	# end
 			end
-			return emailJobs
+			# return emailJobs
 
 		end
 

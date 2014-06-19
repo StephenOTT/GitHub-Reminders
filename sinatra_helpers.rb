@@ -604,10 +604,14 @@ module Sinatra_Helpers
 			emailJobs = []
 			userJobs.each do |x|
 				job = client.jobs[x]
+				temphash = {}
 				# emailJobs << job.klass.to_s
 				# emailJob = client.jobs[x]
 				if job.klass.to_s == "SendEmail"
-					emailJobs << job.tags
+					job.tags.each do |t|
+						temphash = Hash[*t.split("=")]
+					end
+					emailJobs << temphash
 				end
 			end
 			return emailJobs

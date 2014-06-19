@@ -599,15 +599,15 @@ module Sinatra_Helpers
 			# emailJobs = userJobs.klass("SendEmail")
 			# emailJobs.tags("UserID=#{userid}")
 			# return emailJobs
-			emailJobs = []
-			userJobs.each do |x|
-				job = client.jobs[x]
+			emailJobs = client.jobs[userJobs].klass
+			# userJobs.each do |x|
+				# job = client.jobs[x]
 				# emailJobs << job.klass.to_s
 			# 	emailJob = client.jobs[x]
 			# 	# if emailJob.klass == "SendEmail"
 			# 		emailJobs << emailJob.data
 			# 	# end
-			end
+			# end
 			# return emailJobs
 
 		end

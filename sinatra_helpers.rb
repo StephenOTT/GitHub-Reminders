@@ -589,12 +589,12 @@ module Sinatra_Helpers
 		def self.send_comment_to_qless(comment)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(CheckIfReminder, {"comment" => comment})
+			queue.put(CheckIfReminder, {"comment" => comment}, :tags => ["UserID=#{comment["comment"]["user"]["id"]}",
+																		 "FullRepoName=#{comment["repository"]["full_name"].downcase}",
+																		 "UserAndRepo=#{comment["comment"]["user"]["id"]}/#{comment["repository"]["full_name"].downcase}"
+																		 ])
 
 		end
-
-
-		
 
 		def self.run_qless_job(jid)
 

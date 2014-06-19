@@ -8,7 +8,26 @@
 			<p>List of your Reminders</p>
 		</div>
 
-		<%= @reminderListing %>
-
+	<table class="table">
+		<thead>
+			<tr>
+				<th>UserID</th>
+				<th>Repo Name</th>
+				<th>Issue Number</th>
+				<th>Comment Number</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @reminderListing.each do |r| %>
+				<tr>
+					<td><%= r["UserID"] %></td>
+					<td><%= r["FullRepoName"] %></td>
+					<td><%= r["issueNumber"] %></td>
+					<td><%= r["commentNumber"] %></td>
+				</tr>				
+			<% end %>
+		</tbody>
+	</table>
+	
 </div>
 

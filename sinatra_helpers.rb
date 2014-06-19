@@ -600,7 +600,7 @@ module Sinatra_Helpers
 			# emailJobs.tags("UserID=#{userid}")
 			# return emailJobs
 			emailJobs = client.jobs['23e098b3ebce42078fe9c23ed5babd4c']
-			emailjobs.klass
+			emailjobs.data
 			# userJobs.each do |x|
 				# job = client.jobs[x]
 				# emailJobs << job.klass.to_s

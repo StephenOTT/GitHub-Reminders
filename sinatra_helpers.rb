@@ -607,7 +607,7 @@ module Sinatra_Helpers
 				# emailJobs << job.klass.to_s
 			# 	emailJob = client.jobs[x]
 				if job.klass == "SendEmail"
-					emailJobs << emailJob.data
+					emailJobs << job.data
 				end
 			end
 			return emailJobs

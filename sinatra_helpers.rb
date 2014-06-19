@@ -613,6 +613,7 @@ module Sinatra_Helpers
 						temparray = t.split("=")
 						temphash[temparray[0]] = temparray[1]
 					end
+					temphash["scheduledDate"] = job.scheduleddate
 					emailJobs << temphash
 				end
 			end

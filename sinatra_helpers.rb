@@ -611,7 +611,15 @@ module Sinatra_Helpers
 						temparray = t.split("=")
 						temphash[temparray[0]] = temparray[1]
 					end
-					temphash["scheduledDate"] = DateTime.strptime(job.data["scheduledDateTime"], '%s').in_time_zone(userTimezone[0..-8])
+					
+					scheduledDateTime = job.data["scheduledDateTime"]
+					
+					if scheduledDateTime != nil
+						temphash["scheduledDate"] = DateTime.strptime(job.data["scheduledDateTime"], '%s').in_time_zone(userTimezone[0..-8])
+					else
+						temphash["scheduledDate"] = nil
+					end
+					
 
 					temphash["jobState"] = job.state
 					emailJobs << temphash

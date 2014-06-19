@@ -334,7 +334,6 @@ module GitHubReminders
 			Sinatra_Helpers.send_comment_to_qless(request_payload)
 		end
 
-
 		# get '/emailtest' do
 		# 	if authenticated? == true
 		# 		userProfile = Sinatra_Helpers.get_user_profile(get_auth_info[:userID])
@@ -357,6 +356,46 @@ module GitHubReminders
 		# get '/runjob/:jid' do
 		# 	Sinatra_Helpers.run_qless_job(params["jid"])
 		# end
+
+
+
+
+		get '/getreminders' do
+			# post = params[:post]
+			if authenticated? == true
+				# fullRepoName = "#{params[:username]}/#{params[:repository]}"
+				
+				@reminderListing = Sinatra_Helpers.get_email_jobs_for_user(get_auth_info[:userID])
+
+				# if unregisteredRepo[:type] == :success
+				# 	flash[:success] = [unregisteredRepo[:text]]
+				# elsif unregisteredRepo[:type] == :failure
+				# 	flash[:warning] = [unregisteredRepo[:text]]
+				# end
+
+				# redirect ''
+			erb :reminders_listing
+			else
+				flash[:warning] = ["You must be logged in"]
+				erb :unauthenticated
+			end 
+		end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		get '/logout' do

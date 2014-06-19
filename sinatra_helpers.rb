@@ -592,6 +592,13 @@ module Sinatra_Helpers
 			queue.put(CheckIfReminder, {"comment" => comment})
 		end
 
+		def self.get_email_jobs_for_user(userid)
+			client = Qless::Client.new(:url => ENV["REDIS_URL"])
+			emailJobs = client.klass("SendEmail")
+			emailJobs.tags("UserID=#{userid}")
+
+		end
+
 		# def self.run_qless_job(jid)
 
 		# 	client = Qless::Client.new(:url => ENV["REDIS_URL"])

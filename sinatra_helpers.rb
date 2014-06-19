@@ -595,8 +595,8 @@ module Sinatra_Helpers
 
 		def self.get_email_jobs_for_user(userid)
 
-			userTimezone = get_user_profile(userid)
-			userTimezone = userTimezone["timezone"]
+			userTimezone = self.get_user_profile(userid)["timezone"]
+			# userTimezone = userTimezone["timezone"]
 			
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
@@ -614,14 +614,8 @@ module Sinatra_Helpers
 					end
 					
 					scheduledDateTime = job.data["scheduledDateTime"].to_s
+					temphash["scheduledDate"] = DateTime.strptime(scheduledDateTime, '%s').in_time_zone(userTimezone[0..-8])
 					
-					if scheduledDateTime != nil
-						temphash["scheduledDate"] = DateTime.strptime(scheduledDateTime, '%s').in_time_zone(userTimezone[0..-8])
-					else
-						temphash["scheduledDate"] = nil
-					end
-					
-
 					temphash["jobState"] = job.state
 					emailJobs << temphash
 				end
@@ -631,6 +625,8 @@ module Sinatra_Helpers
 
 
 end
+
+puts DateTime.strptime("1403151944", '%s').in_time_zone("Eastern Time (US & Canada)")
 
 # Debug Code
 # Sinatra_Helpers.mongo_connection

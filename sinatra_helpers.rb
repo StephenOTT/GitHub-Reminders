@@ -569,44 +569,35 @@ module Sinatra_Helpers
 
 		# Method used for debugging / Email testing.
 		# This is the model method for generating a email.
-		def self.create_qless_job(options = {})
+		# def self.create_qless_job(options = {})
 
-			client = Qless::Client.new(:url => ENV["REDIS_URL"])
-			queue = client.queues['testing']
-			queue.put(SendEmail, {:toEmail => options[:toEmail],
-									:body => options[:body],
-									:subject => options[:subject]
-									}, 
-									:delay => options[:delay],
-									# :tags => ["User|#{options[:username]}",
-									# 		 "Repo|#{options[:repo]}",
-									# 		 "Issue|#{options[:issueNumber]}"]
-											 )
+		# 	client = Qless::Client.new(:url => ENV["REDIS_URL"])
+		# 	queue = client.queues['testing']
+		# 	queue.put(SendEmail, {:toEmail => options[:toEmail],
+		# 							:body => options[:body],
+		# 							:subject => options[:subject]
+		# 							}, 
+		# 							:delay => options[:delay],
+		# 							# :tags => ["User|#{options[:username]}",
+		# 							# 		 "Repo|#{options[:repo]}",
+		# 							# 		 "Issue|#{options[:issueNumber]}"]
+		# 									 )
 
-		end
+		# end
 
 		# Sends comment to Qless for validation.  Other processes are handled by Qless
 		def self.send_comment_to_qless(comment)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
 			queue = client.queues['testing']
-			queue.put(CheckIfReminder, {"comment" => comment}, 
-				# :tags => ["UserID=#{comment["comment"]["user"]["id"]}",
-				# 		 "FullRepoName=#{comment["repository"]["full_name"].downcase}",
-				# 		 "UserAndRepo=#{comment["comment"]["user"]["id"]}/#{comment["repository"]["full_name"].downcase}"
-				# 														 ]
-																		 )
-
+			queue.put(CheckIfReminder, {"comment" => comment})
 		end
 
-		def self.run_qless_job(jid)
+		# def self.run_qless_job(jid)
 
-			client = Qless::Client.new(:url => ENV["REDIS_URL"])
-			job = client.jobs[jid]
-			job.data
-		end
-
-
-
+		# 	client = Qless::Client.new(:url => ENV["REDIS_URL"])
+		# 	job = client.jobs[jid]
+		# 	job.data
+		# end
 
 end
 

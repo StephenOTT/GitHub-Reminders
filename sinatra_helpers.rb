@@ -602,9 +602,9 @@ module Sinatra_Helpers
 			emailJobs = []
 			userJobs.each do |x|
 				emailJob = client.jobs[x]
-				if emailJob.klass == "SendEmail"
+				# if emailJob.klass == "SendEmail"
 					emailJobs << emailJob.data
-				end
+				# end
 			end
 			return emailJobs
 

@@ -18,6 +18,7 @@
 				<th>Schdduled Date</th>
 				<th>Actioned Date</th>
 				<th>State</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +31,22 @@
 					<td><%= r["scheduledDate"] %></td>
 					<td></td>
 					<td><%= r["jobState"] %></td>
+					<td>
+								<div class="btn-group">
+									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li class="disabled">
+											<a href="#">Modify</a>
+										</li>
+										<li class="disabled">
+											<a href="#">Delete</a>
+										</li>
+										<li class="disabled">
+											<a href="#">More Info</a>
+										</li>
+									</ul>
+								</div>
+							</td>
 				</tr>				
 			<% end %>
 		</tbody>

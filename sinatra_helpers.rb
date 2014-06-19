@@ -609,7 +609,7 @@ module Sinatra_Helpers
 				if job.klass == "SendEmail"
 					emailJobs << emailJob.data
 				end
-			# end
+			end
 			return emailJobs
 
 		end

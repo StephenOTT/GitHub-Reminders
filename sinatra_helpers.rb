@@ -595,8 +595,8 @@ module Sinatra_Helpers
 
 		def self.get_email_jobs_for_user(userid)
 
-			userTimezone = self.get_user_profile(userid)["timezone"]
-			# userTimezone = userTimezone["timezone"]
+			userTimezone = self.get_user_profile(userid)
+			userTimezone = userTimezone["timezone"]
 			
 
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])

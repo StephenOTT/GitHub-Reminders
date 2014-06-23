@@ -334,6 +334,8 @@ module GitHubReminders
 		    reminderCommentTF = Sinatra_Helpers.isReminderComment?(request_payload)
 		    if reminderCommentTF == true
 				return Sinatra_Helpers.send_comment_to_qless(request_payload)
+			else
+				return "not a reminder comment"
 			end
 		end
 

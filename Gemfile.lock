@@ -4,6 +4,7 @@ PATH
     sinatra_auth_github (1.0.0)
       activesupport (~> 3.0.0)
       bson_ext
+      chronic
       chronic_duration
       i18n
       mongo
@@ -32,6 +33,7 @@ GEM
     bson (1.10.1)
     bson_ext (1.10.1)
       bson (~> 1.10.1)
+    chronic (0.10.2)
     chronic_duration (0.10.4)
       numerizer (~> 0.1.1)
     diff-lcs (1.1.3)

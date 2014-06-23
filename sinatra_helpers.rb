@@ -9,6 +9,7 @@ require 'qless'
 require_relative 'webhook/jobs'
 # require 'pp'
 require 'rest-client'
+require_relative 'reminder_validation/controller'
 
 class SendEmail
   def self.perform(job)
@@ -586,6 +587,15 @@ module Sinatra_Helpers
 
 		# end
 
+
+		def isReminderComment?(comment)
+
+			ReminderValidation.is_Reminder_Comment?(comment["comment"]["body"])
+
+		end
+
+
+
 		# Sends comment to Qless for validation.  Other processes are handled by Qless
 		def self.send_comment_to_qless(comment)
 			client = Qless::Client.new(:url => ENV["REDIS_URL"])
@@ -631,7 +641,7 @@ module Sinatra_Helpers
 
 end
 
-puts DateTime.strptime("1403151944", '%s').in_time_zone("Eastern Time (US & Canada)")
+# puts DateTime.strptime("1403151944", '%s').in_time_zone("Eastern Time (US & Canada)")
 
 # Debug Code
 # Sinatra_Helpers.mongo_connection

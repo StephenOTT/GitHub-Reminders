@@ -588,13 +588,9 @@ module Sinatra_Helpers
 		# end
 
 
-		def isReminderComment?(comment)
-
+		def self.isReminderComment?(comment)
 			ReminderValidation.is_Reminder_Comment?(comment["comment"]["body"])
-
 		end
-
-
 
 		# Sends comment to Qless for validation.  Other processes are handled by Qless
 		def self.send_comment_to_qless(comment)

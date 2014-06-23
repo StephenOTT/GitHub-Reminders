@@ -7,6 +7,7 @@ PATH
       chronic
       chronic_duration
       i18n
+      json
       mongo
       newrelic_rpm
       octokit
@@ -40,6 +41,7 @@ GEM
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     i18n (0.6.10)
+    json (1.8.1)
     kgio (2.9.2)
     mime-types (2.3)
     mongo (1.10.1)

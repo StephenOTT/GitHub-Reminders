@@ -10,6 +10,7 @@ require_relative 'webhook/jobs'
 # require 'pp'
 require 'rest-client'
 require_relative 'reminder_validation/controller'
+require "json"
 
 class SendEmail
   def self.perform(job)
@@ -587,9 +588,10 @@ module Sinatra_Helpers
 
 		# end
 
-
+		# TODO rebuild when JSON is parsed for this method and the send_comment_to_qless method
 		def self.isReminderComment?(comment)
-			ReminderValidation.is_Reminder_Comment?(comment["comment"]["body"])
+			parsedComment = JSON.parse(comment)
+			ReminderValidation.is_Reminder_Comment?(parsedComment["comment"]["body"])
 		end
 
 		# Sends comment to Qless for validation.  Other processes are handled by Qless

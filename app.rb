@@ -333,7 +333,7 @@ module GitHubReminders
 
 		    reminderCommentTF = Sinatra_Helpers.isReminderComment?(request_payload)
 		    if reminderCommentTF == true
-				Sinatra_Helpers.send_comment_to_qless(request_payload)
+				return Sinatra_Helpers.send_comment_to_qless(request_payload)
 			end
 		end
 

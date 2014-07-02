@@ -22,7 +22,9 @@ module Helpers
 	end
 
 	def self.parse_billable_time_comment(timeComment, timeEmoji)
-		return timeComment.gsub("#{timeEmoji} ","").split(" | ")
+		# return timeComment.gsub("#{timeEmoji} ","").split(" | ")
+		return timeComment.gsub("#{timeEmoji} ","").split(/[" | ", "\r\n"]/, 1)
+
 	end
 
 	def self.get_time_commit_comment(parsedTimeComment)

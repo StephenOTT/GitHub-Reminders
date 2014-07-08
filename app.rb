@@ -3,7 +3,7 @@ require_relative 'sinatra_helpers'
 module GitHubReminders
 	class App < Sinatra::Base
 		set :logging, :true
-		# set :show_exceptions, false
+		set :show_exceptions, false	
 		enable :sessions
 		use Rack::Flash, :sweep => true
 

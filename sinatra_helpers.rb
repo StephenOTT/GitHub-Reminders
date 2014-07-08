@@ -84,7 +84,7 @@ module Sinatra_Helpers
 			# if hook does not exist in GitHub	
 			elsif hookExistsGHYN[0] == false			
 				begin
-					githubAPIObject.create_hook(
+					registered_hook = githubAPIObject.create_hook(
 												fullNameRepo,	'web',
 												{
 													:url => 'http://www.github-reminders.com/webhook',

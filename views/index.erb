@@ -1,44 +1,6 @@
 <div class="row clearfix">
 	<div class="col-md-12 column">
-		<h3>
-			Personally Registered Repositories.
-		</h3>
 		<p>Register a Webhook or Select a Webhook that already exsists and then Regiter the Repository.  Once you have a Repository in "Personally Registered Repositries" you are good to go!  Start making Reminder Comments.</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Repository</th>
-					<th>Active</th>
-					<th>Registered At</th>
-					<th>Last Updated At</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% if @registeredRepoList %>
-					<% @registeredRepoList.each do |r| %>
-						<tr>
-							<td><%= r["registered_repos"]["repo"] %></td>
-							<td><%= r["registered_repos"]["active"] %></td>
-							<td><%= r["registered_repos"]["created_at"] %></td>
-							<td><%= r["registered_repos"]["updated_at"] %></td>
-							<td>
-								<div class="btn-group">
-									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="/unregisterrepo/<%= r["registered_repos"]["repo"] %>">Un-Register Repo</a>
-										</li>
-										<li class="disabled">
-											<a href="#">Change Status</a>
-										</li>
-									</ul>
-								</div>
-							</td>
-						</tr>				
-					<% end %>
-				<% end %>
-			</tbody>
-		</table>
 		<br><br>
 		<h3>
 			Personally Registered WebHooks.
@@ -163,5 +125,48 @@
 				<% end %>
 			</tbody>
 		</table>
+		
+		<br><br>
+		
+		<h3>
+			Personally Registered Repositories.
+		</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Repository</th>
+					<th>Active</th>
+					<th>Registered At</th>
+					<th>Last Updated At</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if @registeredRepoList %>
+					<% @registeredRepoList.each do |r| %>
+						<tr>
+							<td><%= r["registered_repos"]["repo"] %></td>
+							<td><%= r["registered_repos"]["active"] %></td>
+							<td><%= r["registered_repos"]["created_at"] %></td>
+							<td><%= r["registered_repos"]["updated_at"] %></td>
+							<td>
+								<div class="btn-group">
+									 <button class="btn btn-default">Actions</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/unregisterrepo/<%= r["registered_repos"]["repo"] %>">Un-Register Repo</a>
+										</li>
+										<li class="disabled">
+											<a href="#">Change Status</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>				
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>
+
+
 	</div>
 </div>

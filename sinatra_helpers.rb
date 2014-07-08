@@ -123,7 +123,7 @@ module Sinatra_Helpers
 				self.find_and_modify_document(:query => {"userid" => userid},
 											  :update => {"$push" => {"registered_hooks" => registered_hook_info }}
 											)
-				return 
+				return {:type => :success, :text=>"Hook was successfully registered"}
 			rescue
 				return {:type => :failure, :text=>"Something went wrong when we tried to register you hook"}
 			end

@@ -8,7 +8,7 @@ module GitHubReminders
 		use Rack::Flash, :sweep => true
 
 		set :github_options, {
-			:scopes    => "user, admin:repo_hook",
+			:scopes    => "user, admin:repo_hook, repo",
 			:secret    => ENV['GITHUB_CLIENT_SECRET'],
 			:client_id => ENV['GITHUB_CLIENT_ID'],
 		}

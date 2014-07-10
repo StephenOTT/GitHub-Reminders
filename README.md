@@ -6,6 +6,8 @@ Server side app and Webhook to parse GitHub Issue Comments and generate schedule
 
 Sinatra + GitHub OAuth + Qless + Chronic gem + Email = GitHub-Reminders
 
+Worker (executes scheduled emails): https://github.com/StephenOTT/GitHub-Reminders-Worker
+
 ## Reminder Syntax
 
 While in a Issue make a comment with the following:

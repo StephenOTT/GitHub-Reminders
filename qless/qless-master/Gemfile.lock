@@ -60,7 +60,7 @@ GEM
       http_parser.rb (~> 0.5.3)
       multi_json (~> 1.0)
     powerpack (0.0.8)
-    rack (1.5.2)
+    rack (1.6.12)
     rack-protection (1.5.0)
       rack
     rack-test (0.6.2)

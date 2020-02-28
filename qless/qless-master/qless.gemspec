@@ -41,7 +41,7 @@ language-specific extension will also remain up to date.
   s.add_development_dependency 'vegas'         , '~> 0.1.11'
   s.add_development_dependency 'rspec'         , '~> 2.12'
   s.add_development_dependency 'rspec-fire'    , '~> 1.1'
-  s.add_development_dependency 'rake'          , '~> 10.0'
+  s.add_development_dependency 'rake'          , '~> 13.0'
   s.add_development_dependency 'capybara'      , '~> 1.1.2'
   s.add_development_dependency 'poltergeist'   , '~> 1.0.0'
   s.add_development_dependency 'faye-websocket', '~> 0.4.0'

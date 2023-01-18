@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   # s.add_dependency "qless"
   s.add_dependency "i18n"
   s.add_dependency "tzinfo"
-  s.add_dependency "activesupport", "~>3.0.0"
+  s.add_dependency "activesupport", ">=3.0", "<7.1"
   s.add_dependency 'time_difference'
   s.add_dependency 'octokit'
   s.add_dependency "rack-flash3"
